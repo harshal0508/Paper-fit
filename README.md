@@ -7,7 +7,12 @@ It ingests deepfake detection papers, structures them into a custom knowledge gr
 For a detailed explanation of the reasoning, schema tradeoffs, and limitations (including why I chose a rule-based approach over an LLM and how the MesoNet edge-case was handled), see [approach.md](approach.md).
 
 ## Project Structure
-- `config/` - Contains `lexicon.json` and `schema.json`, which define the rules and keywords for the engine.
+- `config/` - Contains `lexicon.json` and `schema.json`, which define the rules and keywords for the engine. 
+  > **💡 Architecture Note:** The Python pipeline itself is completely domain-agnostic. All domain logic is isolated in these JSON files. For example, to adapt this entire engine to **Medical Tumor Detection**, you would just:
+  > 1. Fetch new data: `python src/fetch_openalex.py "breast cancer MRI"`
+  > 2. In `config/schema.json`, change the modalities to `["x-ray", "mri"]` and cue families to `["tumor_size", "tissue_density"]`.
+  > 3. In `config/lexicon.json`, map medical terms (like `"lesion"` or `"calcification"`) to your new cues.
+  > Without rewriting a single line of Python, the exact same pipeline will now generate a knowledge graph grading medical papers based on diagnostic cues.
 - `src/` - Python source code for fetching, building the knowledge state, and analyzing projects.
 - `data/` - Holds raw paper JSONs, full-text extractions, and the labeled dataset for validation.
 - `knowledge_state/` - The built graph JSON and visualization output.
