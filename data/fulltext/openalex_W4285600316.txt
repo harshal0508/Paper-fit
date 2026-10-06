@@ -1,0 +1,680 @@
+Region-Aware Temporal Inconsistency Learning for DeepFake Video Detection
+Zhihao Gu1,2∗ , Taiping Yao2∗ , Yang Chen2∗ , Ran Yi1 , Shouhong Ding2† and Lizhuang Ma1,3†
+1School of Electronic and Electrical Engineering, Shanghai Jiao Tong University, Shanghai, China
+2Tencent Youtu Lab, Shanghai, China
+3MoE Key Lab of Artificial Intelligence, Shanghai Jiao Tong University, Shanghai, China
+{ellery-holmes, ranyi}@sjtu.edu.cn,{taipingyao, wizyangchen, ericshding}@tencent.com,
+ma-lz@cs.sjtu.edu.cn
+Abstract
+The rapid development of face forgery techniques
+has drawn growing attention due to security con-
+cerns. Existing deepfake video detection methods
+always attempt to capture the discriminative fea-
+tures by directly exploiting static temporal convo-
+lution to mine temporal inconsistency, without ex-
+plicit exploration on the diverse temporal dynam-
+ics of different forged regions. To effectively and
+comprehensively capture the various inconsistency,
+in this paper, we propose a novel Region-Aware
+Temporal Filter (RATF) module which automati-
+cally generates corresponding temporal filters for
+different spatial regions. Specifically, we decouple
+the dynamic temporal kernel into a set of region-
+agnostic basic filters and region-sensitive aggre-
+gation weights. And different weights guide the
+corresponding regions to adaptively learn tempo-
+ral inconsistency, which greatly enhances the over-
+all representational ability. Moreover, to cover the
+long-term temporal dynamics, we divide the video
+into multiple snippets and propose a Cross-Snippet
+Attention (CSA) to promote the cross-snippet in-
+formation interaction. Extensive experiments and
+visualizations on several benchmarks demonstrate
+the effectiveness of our method against state-of-
+the-art competitors.
+1 Introduction
+With the tremendous development of generative models, var-
+ious face manipulation techniques have been proposed, such
+as DeepFakes and Face2Face. Since they can generate high-
+quality fake face videos that are even indistinguishable by hu-
+man eyes, they can easily be abused and trigger severe soci-
+etal problems or political threats over the world. Therefore, it
+is urgent to develop effective face forgery detection methods.
+Recently, significant progress has been achieved for identi-
+fying DeepFakes. Image-based detection methods attempt to
+exploit diverse cues to learn discriminative features, including
+∗Equal Contributions. This work is done when Zhihao Gu was a
+research intern at Tencent Youtu Lab.
+†Corresponding Authors.
+DeepFake
+Video
+…
+Region 1
+Region 2
+Figure 1: Illustration of diverse temporal inconsistency in differ-
+ent forged regions. We denote the absolute change value of the re-
+gion between adjacent frames as temporal inconsistency. Obviously,
+these two regions have not only different magnitudes of inconsis-
+tency but also different temporal inconsistency patterns.
+blending boundary [Li et al., 2020a; Wang et al., 2020b] and
+frequency information [Chen et al., 2021; Gu et al., 2021a;
+Sun et al., 2022]. However, as the forged faces become more
+and more realistic, it is challenging for these approaches to
+mine the subtle clues. Besides, since the temporal informa-
+tion between frames is not considered, these methods can
+only identify the fake videos frame by frame, which also
+limits the performance. Therefore, many works have devel-
+oped video-based methods [Li et al., 2020b; Gu et al., 2021b]
+to take such temporal information into consideration. Ear-
+lier methods directly adopt general temporal modeling net-
+works, e.g., LSTM [Sohrawardi et al., 2019] and 3DCNN, re-
+sulting in inferior performance and high computational cost.
+Recently, several approaches propose effective and efficient
+temporal modeling for this task. S-MIL [Li et al., 2020b ]
+treats faces and each input video as instances and a bag re-
+spectively, and designs a multi-instance learning framework
+to model the inconsistency in nearby frames. STIL[Gu et al.,
+2021b] presents a temporal modeling paradigm by exploit-
+ing the temporal difference over adjacent frames along with
+different directions. Though these methods have effectively
+improved the performance, there are still some limitations in
+learning the comprehensive temporal inconsistency.
+On the one hand, these methods always apply a sparse sam-
+pling strategy on videos to capture temporal information over
+the entire video. However, the stride between sampled frames
+might be too large to capture the inconsistency resulting from
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+920
+subtle forgery traces. On the other hand, in terms of local
+temporal inconsistency modeling, these methods utilize the
+traditional static temporal convolution without explicit explo-
+ration of the temporal dynamics of different forged regions,
+which is not sufficient to capture the comprehensive incon-
+sistency information. To show this more intuitively, in Fig. 1,
+we select two different forged regions of a deepfake video and
+denote the absolute difference value of the region between ad-
+jacent frames as temporal inconsistency. These two regions
+have not only different magnitudes of inconsistency but also
+different temporal inconsistency patterns.
+To address these issues, we propose a novel Region-Aware
+Temporal Inconsistency Learning framework for deepfake
+video detection. Concretely, the Region-Aware Temporal
+Filter (RATF) module is introduced to automatically gen-
+erate corresponding temporal filters for different spatial re-
+gions, which decouples the dynamic temporal kernel into a
+set of region-agnostic basic filters and region-aware aggre-
+gation weights. And different weights guide the correspond-
+ing regions to adaptively learn self-unique temporal incon-
+sistency. Moreover, to cover the long-term temporal dynam-
+ics, we divide the video into multiple snippets and propose a
+Cross-Snippet Attention (CSA) to promote the cross-snippet
+information interaction and obtain comprehensive represen-
+tations for the entire video. Extensive experiments on sev-
+eral popular benchmarks, i.e., FF++, DFDC, Celeb-DF, and
+WildDeepfake datasets, demonstrate the effectiveness of our
+method against the state-of-the-art competitors in both intra-
+dataset and cross-dataset evaluations. In summary, our main
+contributions are as follows:
+• We propose a novel Region-Aware Temporal Inconsis-
+tency Learning framework for deepfake video detection,
+which automatically generates corresponding temporal
+filters for guiding different regions to learn self-unique
+temporal inconsistency.
+• Combined with the specially designed sampling strat-
+egy, the Cross-Snippet Attention (CSA) module is pro-
+posed to facilitate the cross-snippet information interac-
+tion for more comprehensive representations.
+• Extensive experiments and visualizations demonstrate
+the effectiveness of our method against the state-of-the-
+art competitors on several widely used benchmarks.
+2 Related Work
+DeepFake Detection. The recent deepfake video detec-
+tors can be divided into image-based and video-based meth-
+ods. Image-based detection methods attempt to exploit di-
+verse cues to learn discriminative features, including blend-
+ing boundary [Li et al., 2020a; Wang et al., 2020b ] and fre-
+quency information [Chen et al., 2021; Gu et al., 2021a;
+Sun et al., 2022 ]. However, these works ignore the tem-
+poral information in videos, which is also an essential clue
+for deepfake detection. Therefore, recent video-based ap-
+proaches take temporal inconsistency into consideration. Co-
+motion [Wang et al., 2020a ] models the temporal motion of
+multiple specific spatial locations to extract robust represen-
+tation. TD-3DCNN [Zhang et al., 2021] introduces a tempo-
+ral dropout 3D-CNN to detect deepfake videos. S-MIL [Li
+et al., 2020b ] treats faces and each input video as instances
+and a bag respectively, and designs a multi-instance learn-
+ing framework to model the inconsistency in nearby frames.
+DIANet [Hu et al., 2021 ] handles the problem by captur-
+ing both the global and local inconsistency between adjacent
+two frames. And STIL [Gu et al., 2021b ] designs a tem-
+poral modeling paradigm by exploiting temporal difference
+over adjacent frames along different directions. Though these
+methods have effectively improved the performance, they al-
+ways utilize the traditional static temporal convolution with-
+out explicit exploration of the temporal dynamics of different
+forged regions, which may be not sufficient to capture the
+comprehensive inconsistency information.
+Dynamic Filters. Methods in this category aim to gener-
+ate filter values based on the input features instead of tradi-
+tional static convolution. [Jia et al., 2016] first introduces the
+idea of dynamic filter, and has been developed by its succes-
+sors. DDF [Zhou et al., 2021] designs a dynamic filter mod-
+ule to learn channel-wise filters along with spatial weights for
+dense convolution. However, these methods only focus on
+generating spatial filters. Recently, several works try to gen-
+erate dynamic temporal filters for the action recognition task.
+TAM [Liu et al., 2021 ] presents an adaptive module to gen-
+erate temporal kernels for video-specific information aggre-
+gation. DSANet [Wu et al., 2021] introduces a dynamic seg-
+ment aggregation module to aggregate temporal information.
+As for deepfake video detection task, since different regions
+have diverse temporal inconsistency patterns, these methods
+inspire us to adopt dynamic temporal filters for comprehen-
+sive inconsistency learning. Instead of directly learning the
+temporal kernels, we decouple the dynamic temporal kernel
+into a set of region-agnostic basic filters and region-sensitive
+aggregation weights. And the different weights guide regions
+to adaptively learn self-unique temporal inconsistency.
+3 Proposed Method
+3.1 Overview
+We propose to learn dynamic temporal filters at each spatial
+position for modeling diverse temporal inconsistency. Given
+a videoV = [F 1,...,F |V| ], where |V| is the length of the
+video, we divide it into N equal segments and randomly
+sample T consecutive frames in each segment to obtain N
+snippets. Based on them, we design a Region-Aware Tempo-
+ral Filter (RATF) module to decouple the dynamic temporal
+kernel into a set of region-agnostic basic filters and region-
+sensitive aggregation weights. Different aggregation weights
+thus guide the corresponding regions to adaptively learn the
+intra-snippet temporal inconsistency. Then a Cross-Snippet
+Attention (CSA) is introduced to promote the information in-
+teraction between snippets. Finally, the outputs are further
+averaged for deciding whether the video is forged or not. Fig-
+ure 2 illustrates the pipeline.
+3.2 Region-Aware Temporal Filter Module
+Instead of applying static convolution on the temporal di-
+mension, we propose a self-adaptive mechanism to generate
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+921
+!
+" fake/real
+RA TF Block
+CSAConv1
+#′×#′
+&':1×1
+&*:1×1
++
+#‘×-ℎ/
+#‘×-ℎ/
+#×1
+#×-ℎ/
+Interaction
+Interaction
+…
+#′×#′
+Avg 
+#′×#′
+#′×#′
+softmax
+GAP
+⋯
+1×1
+3×3
+1×1
+RATF
+1×1
+3×3
+1×1
+RATF
+1×1
+3×3
+1×1
+RATF
+⋯
+(1−5)#×-×ℎ×/
+#
+ℎ
+/
+-
+C#×-×ℎ×/
+#×-×
+5#×-×ℎ×/
+…78 79 7:
+;8 …
+ℎ /
+;8 …
+;r×1×1
+=5#×-×ℎ×/
+Reshape
+Conv2d
+∑∑
+*
+*
+5c×@5#×-×=Pooling
+FC
+;r×1×1
+5c×@5c×@ 5c×@
+#×-×ℎ×/
+ABC
+5#×-×ℎ×/
+Align
+Conv
+Weight branch
+Basis branch
+RA TF Block RA TF Block
+Region-Aware Temporal Filter (RATF) Cross-Snippet Attention (CSA)#×-ℎ/
+DAB
+Align Conv
+-+1-−1
+ -
+"FGH8 3×3
+Out
+In
+AB
+ABIB
+DAB
+DAB DAJ
+DAKL8
+DABM
+A9B
+A8B A8BM
+A8B
+NB
+&O
+5#×-A8B
+5#×-×ℎ×/
+Reshape
+"FGH9
+"FGHP1×1
+3×3
+ABCQR
+!
+Figure 2: The overall architecture of the proposed framework. It contains two specifically designed components, i.e., the region-aware
+temporal filter (RATF) module and the cross-snippet attention (CSA). The RATF module generates content-adaptive temporal filters for each
+position while the CSA encodes the inter-snippet information for long-range global representations. ∗, C,× and· stand for depth-wise
+convolution, concatenation, matrix multiplication and point-wise multiplication, respectively.
+different temporal convolution filters for different spatial re-
+gions. This mechanism is instantiated as the Region-Aware
+Temporal Filter (RATF) module and applied within each
+snippet. As depicted in Figure 2, the module mainly contains
+two branches: the basis branch and the weight branch. The
+former generates region-agnostic basic filters while the latter
+generates corresponding region-sensitive weights at each spa-
+tial location. The two branches produce depth-wise temporal
+filters through multiplication.
+Formally, the input feature Sn ofnth snippet is first split
+along the channel dimension with ratio γ into two parts:
+S1n ∈ RγC×T×H×W and S2n ∈ R(1−γ)C×T×H×W . S1n
+is fed into the two branches to learn the temporal filters. In
+the basis branch, since we aim to generate region-agnostic
+temporal bases, we first flatten the input features S1n along
+the spatial dimension, and then use adaptive average pooling
+to down-sample the dimension tor, resulting inF . Two fully
+connected (FC) layers with the ReLU function follow next to
+produce the final basis vectors:
+[f0,f 1,...,f r−1] = W2(ReLU(W1(F ))), (1)
+whereW1 andW2 correspond to the weights of the FC layers
+andr is the number of basis. Each basis is in the dimension
+ofγc×k, wherek denotes the temporal kernel size.
+In the weight branch, we design an Align Convolution
+block at the head to compensate for the pixel position shifts
+between adjacent frames caused by subtle facial movements.
+This alignment is accomplished in a self-adaptive manner:
+F = Conv1(Ft−1) + Conv2(Ft) + Conv3(Ft+1), (2)
+where Conv1, Conv2 and Conv3 are covolutions with kernel
+size 3×3, 1×1 and 3×3 respectively. After that, for each spa-
+tial position (:,i,j ), all the channels of every frame are aggre-
+gated together and then reduced to r by a 1× 1 convolution.
+So that the region-sensitive weights are obtained and the r
+aggregation weights for each location [η:,i,j
+0 ,η :,i,j
+1 ,....η :,i,j
+r−1]
+are generated, which are further normalized into [0, 1] via the
+softmax operation:
+α:,i,j
+m = exp(η:,i,j
+m /τ )P
+m exp(η:,i,j
+m /τ )
+, m ∈ [0,r− 1], (3)
+whereτ is the temperature scalar. Finally, the learned pixel-
+wise temporal filters are obtained by linearly summing the r
+basis with r weights at each spatial location, which is in the
+dimension ofγc×k×h×w.
+The learned weights WA dynamically endow each spatial
+location with different temporal filters and depth-wise con-
+volving S1n with [W:,i,j] pixel-wisely leads to S′
+1n. Then
+the concatenation ofS′
+1n and the remaining unprocessedS2n
+gives the final outputSO
+n . Under this design, different forged
+regions may be assigned with different temporal filters, so
+that the captured local inconsistency is more fine-grained and
+comprehensive. Note that if the aggregation weights between
+adjacent spatial positions are similar, then they share the same
+temporal kernel. Therefore, the regions are formed. This is
+why our method is region-aware.
+3.3 Cross-Snippet Attention
+With RATF mining region-aware local inconsistency within
+each snippet, we further propose a Cross-Snippet Attention
+(CSA) to promote inter-snippet interactions, which focuses
+on the long-range inconsistency over the entire video.
+The CSA gathers the network outputs and then conducts
+interactions between them to guide the attention map gener-
+ation. Inspired by NonLocal [Wang et al., 2018], we utilize
+the outer product operation and accumulate the dependencies
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+922
+Methods FaceForensics++ HQ FaceForensics++ LQ
+DF F2F FS NT DF F2F FS NT
+ResNet-50† 0.9893 0.9857 0.9964 0.9500 0.9536 0.8893 0.9464 0.8750
+Xception 0.9893 0.9893 0.9964 0.9500 0.9678 0.9107 0.9464 0.8714
+LSTM 0.9964 0.9929 0.9821 0.9393 0.9643 0.8821 0.9429 0.8821
+I3D 0.9286 0.9286 0.9643 0.9036 0.9107 0.8643 0.9143 0.7857
+TEI† 0.9786 0.9714 0.9750 0.9429 0.9500 0.9107 0.9464 0.9036
+TAM† 0.9929 0.9857 0.9964 0.9536 0.9714 0.9214 0.9571 0.9286
+DSANet† 0.9929 0.9929 0.9964 0.9571 0.9679 0.9321 0.9536 0.9178
+V4D† 0.9964 0.9929 0.9964 0.9607 0.9786 0.9357 0.9536 0.9250
+FaceNetLSTM 0.8900 0.8700 0.9000 - - - - -
+Co-motion-70 0.9910 0.9325 0.9830 0.9045 - - - -
+DeepRhythm 0.9870 0.9890 0.9780 - - - - -
+ADDNet-3d† 0.9214 0.8393 0.9250 0.7821 0.9036 0.7821 0.8000 0.6929
+S-MIL 0.9857 0.9929 0.9929 0.9571 0.9679 0.9143 0.9464 0.8857
+S-MIL-T 0.9964 0.9964 1.0 0.9429 0.9714 0.9107 0.9607 0.8679
+STIL 0.9964 0.9929 1.0 0.9536 0.9821 0.9214 0.9714 0.9178
+Ours 0.9964 0.9929 1.0 0.9607 0.9928 0.9536 0.9714 0.9393
+Table 1: Intra-dataset comparison on FF++ dataset under both high quality (HQ) and low quality (LQ) settings. Accuracy is reported and best
+results are bold.† implies re-implementation.
+from each snippet to the remained ones for inter-snippet in-
+formation encoding:
+ˆS′
+n = 1
+N
+N−1X
+i=0
+(Sin
+i WI )(Sin
+n WI )T, (4)
+whereSin
+i denotes the network output of the ith snippet and
+WI is a shared 1× 1 convolution for channel reduction with
+default ratio 8. ˆS′
+n encodes the inter-snippet mutual informa-
+tion and is re-mapped back to each snippetSout
+n :
+En = softmax(
+ˆS′
+n√
+thw
+)Sin
+n WI. (5)
+En is a snippet-specific global representation forSin
+n and we
+further obtain the output:
+Sout
+n =σ(GAP(EnWO))⊙Sin
+n WI, (6)
+where WO is a 1× 1 convolution for dimension retrieval
+and GAP represents the global average pooling. The CSA is
+placed at the end of the last RATF block, and the outputSout
+n
+is fed to the fully-connected layer for final binary decisions.
+4 Experiments
+4.1 Experimental Settings
+Datasets. To evaluate the proposed method, we perform
+state-of-the-art comparison under intra-dataset and cross-
+dataset generalization settings on four popular benchmarks:
+FaceForensics++ (FF++) [Rossler et al., 2019], Celeb-DF [Li
+et al., 2020c ], DFDC [Dolhansky et al., 2019 ], WildDeep-
+fake [Zi et al., 2020 ]. FaceForensics++ contains 1,000 real
+and 4,000 fake videos synthesized by four forgery techniques,
+i.e., DeepFakes (DF), Face2Face (F2F), FaceSwap (FS), and
+NeuralTextures (NT) with multiple visual quality, e.g., high
+quality (HQ) and low quality (LQ). Celeb-DF comprises of
+590 real and 5,639 forged videos and is processed by an
+improved synthesis algorithm. DFDC comprises of around
+5,000 videos with some faces partially forged, and the ma-
+nipulations are unknown. WildDeepfake makes up 7,314 face
+sequences with various duration and thus is more challenging.
+Baseline Methods. We take SOTA methods in deepfake
+video detection and video analysis as baselines. For image-
+based methods, ResNet and Xception are selected. For
+deepfake video detectors, FaceNetLSTM [Sohrawardi et al.,
+2019], Co-motion [Wang et al., 2020a ], S-MIL [Li et al.,
+2020b], DeepRhythm [Qi et al. , 2020 ], ADDNet-3d [Zi et
+al., 2020], STIL [Gu et al., 2021b ] and DIANet [Hu et al.,
+2021] are considered. Moreover, action recognition methods
+comprises of I3D [Carreira and Zisserman, 2017 ], TEI [Liu
+et al., 2020 ] and V4D [Zhang et al., 2020 ]. Models learn-
+ing dynamic temporal filters, i.e., TAM [Liu et al., 2021] and
+DSANet [Wu et al., 2021] are also compared.
+Implementation Details. We detect faces following com-
+mon practice [Li et al., 2020b]. We useγ = 0.5 for simplifi-
+cation and empirically setτ 0.01. During training, we sample
+U = 4 snippets and each snippet contains T = 4 frames.
+And images are resized to 224× 224 as input to the network.
+The off-the-shelf ResNet-50 is exploited as the backbone with
+parameters pre-trained on the ImageNet. The RATF module
+is inserted before every 3× 3 Conv in each building block
+while the CSA is put upon the output of the backbone. The
+temperature scalar is set as 10−2. We adopt the Adam algo-
+rithm to optimize the binary cross-entropy loss and train the
+network for 45 epochs on 8 GPUs with the initial learning
+rate of 10−4. The learning rate is divided by 10 for every
+15 epochs and batch-size is 12. Random horizontal flip is
+employed as the data augmentation. During inference, eight
+4-length snippets are centrally sampled from each segment.
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+923
+Methods Celeb-DF DFDC Wild-DF
+Xception 0.9944 0.8458 0.8325
+I3D† 0.9923 0.8082 0.6269
+DIANet - 0.8583 -
+TEI† 0.9912 0.8697 0.8164
+TAM† 0.9923 0.8932 0.8251
+V4D† 0.9942 0.8739 0.8375
+DSANet† 0.9942 0.8867 0.8474
+ADDNet-3D† 0.9516 0.7966 0.6550
+S-MIL 0.9923 0.8378 -
+S-IML-T 0.9884 0.8511 -
+STIL† 0.9961 0.8980 0.8462
+Ours 0.9981 0.9331 0.8573
+Table 2: Comparison on Celeb-DF, DFDC, and WildDeepfake
+datasets. Accuracy is reported and† implies implementation.
+Methods FF++ DF Celeb-DF DFDC
+Xception 0.9550 0.6550 0.5939
+I3D† 0.9541 0.7411 0.6687
+TEI† 0.9654 0.7466 0.6742
+TAM† 0.9704 0.6796 0.6714
+V4D† 0.9674 0.7008 0.6734
+DIANet 0.9040 0.7040 -
+TD-3DCNN - 0.5732 0.5502
+DSANet† 0.9688 0.7371 0.6808
+DoubleRNN 0.9318 0.7341 -
+ADDNet-3D† 0.9622 0.6085 0.6589
+STIL† 0.9712 0.7558 0.6788
+Ours 0.9824 0.7650 0.6906
+Table 3: Cross-dataset generalization in terms of AUC. † im-
+plies re-implementation.
+model DF F2F FS NT
+ResNet-50 0.9536 0.8893 0.9464 0.8750
++ T-Conv 0.9821 0.9250 0.9607 0.9143
++ RATF 0.9821 0.9393 0.9678 0.9312
++ CSA 0.9821 0.9286 0.9607 0.9178
++ RATF∗ + CSA 0.9893 0.9286 0.9643 0.9178
++ RATF + CSA 0.9928 0.9536 0.9714 0.9393
+(a)Study on RATF module and CSA.
+basis num DF F2F FS NT
+21 0.9750 0.9321 0.9571 0.9178
+22 0.9821 0.9428 0.9607 0.9321
+23 0.9928 0.9536 0.9714 0.9393
+24 0.9857 0.9500 0.9643 0.9357
+(b) Study on the amount of temporal basis.
+stages DF F2F FS NT
+Stage1 0.9785 0.9250 0.9571 0.9107
+Stage2 0.9821 0.9250 0.9607 0.9143
+Stage3 0.9821 0.9286 0.9607 0.9178
+Stage4 0.9857 0.9286 0.9643 0.9214
+Stage1+2+3+4 0.9928 0.9536 0.9714 0.9393
+(c) Study on stages of RATF module.
+Table 4: Ablation study of our method on FF++ dataset under LQ
+setting. RATF∗ and T-Conv represent RATF without align conv and
+the vanilla temporal convolution, respectively.
+4.2 State-of-the-art Comparisons
+We perform intra-dataset comparisons on FF++, Celeb-DF,
+DFDC, and WildDeepfake datasets, and report the accuracy
+as the evaluation metrics. Cross-dataset generalization is
+evaluated under the Area Under Curve (AUC) metrics.
+Intra-dataset Comparisons
+Results on FF++. Table 1 illustrates the comprehensive ex-
+periments on FF++ dataset under both LQ and HQ settings.
+We can observe that the SOTA action recognition models per-
+form better than image-based methods like ResNet-50 and the
+advanced V4D is competitive with STIL which is specially
+designed for deepfake detection. However, detectors includ-
+ing ADDNet-3d, S-MIL, and STIL model the inconsistency
+upon sparsely sampled frames and ignore the intra-snippet in-
+formation, which limits their representation capacity. On the
+contrary, our method captures diverse inconsistency through
+generating corresponding temporal filters for different spatial
+regions and promotes the cross-snippet information interac-
+tion by CSA. It thus outperforms nearly all competitors under
+all settings. What’s more, on more difficult F2F and NT LQ
+settings, we achieve 95.36% and 93.93% accuracies, exceed-
+ing about 2% than V4D and 3% than the previous best deep-
+fake detector STIL. All these analyses show the advancement
+of learning dynamic filters in our method.
+Results on Celeb-DF, DFDC and WildDeepfake. The
+proposed framework is also evaluated on three other datasets
+as listed in Table 2. It can be found that our method consis-
+tently surpasses the SOTAs, especially on DFDC by a large
+margin of about 4%. This derives from the fact that our RATF
+module captures dynamic and more fine-grained local in-
+consistency through generating region-aware temporal filters.
+Especially, our method is snippet based and the CSA mech-
+anism encodes the inter-snippets global information, which
+is beneficial to the detection of partially forged videos and
+therefore achieves significant performance improvements on
+the DFDC dataset.
+Cross-dataset Generalization Following [Masi et al.,
+2020], we validate the generalization of the proposed frame-
+work by training the model under FF++ LQ setting against
+four manipulations and then testing it on FF++ DF, Celeb-DF,
+and DFDC datasets respectively. We report the AUC metrics
+in Table 3. It can be observed that our framework outperforms
+all the competitors with about 1% performance gain on aver-
+age. FF++ and Celeb-DF derive from the single forgery and
+thus are relatively easy to generalize to. However, the manip-
+ulations in DFDC are unknown and videos may be partially
+forged. In this case, the inter-snippet interaction may help
+make better video-level decisions and, therefore, our method
+achieves better results.
+4.3 Ablation Study
+Study on RA TF and CSA. The importance of RATF and
+CSA is evaluated in Table 4 (a). Extracting image-level in-
+formation, the vanilla ResNet-50 performs worst. Compared
+to directly using the fixed temporal filters for temporal incon-
+sistency, learning them via RATF improves the overall per-
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+924
+DeepFake Face2Face
+NeuralTexturesFacwSwap
+Figure 3: Visualization on activation against four manipulations.
+Four frames form a snippet and all of them are from FF++ dataset.
+DeepFake  𝑟 = 8 Face2Face  𝑟 = 8
+DeepFake  𝑟 = 4 NeuralTextures  𝑟 = 4
+Figure 4: Visualization on the learned regions with different r.
+formance more than 2% especially on NT. Surprisingly, only
+encoding inter-snippet interaction through an attention mech-
+anism upon the ResNet-50 also promotes the detection and
+performs slightly better than it. Combining intra and inter-
+snippet information achieves the best results.
+Study on the number of temporal basis. In general, the
+performance is robust to r as studied in Table 4 (b). We can
+observe that fewer temporal basis, limiting the extraction of
+inconsistency representations, leads to relatively inferior re-
+sults. However, too large values will also cause a certain per-
+formance drop, the possible reason for which may be that too
+many bases are hard to optimize.
+Study on stage of RA TF . Table 4 (c) explores the im-
+pacts of inserting RATF module into different stages. All
+stages benefit from learning dynamic kernels, achieving per-
+formance gain from 0.4% to 1.8%. Inserting one module to
+stage 4 obtains better performance than others, implying that
+the higher level of semantic features benefits more from it.
+Finally, inserting RATF into all stages yields the best results.
+4.4 Visualization and Analysis
+Activation maps. To study what the network depends on
+to identify forged videos, we visualize the activation maps
+via Grad-CAM [Selvaraju et al., 2017] as shown in Figure 3.
+Clearly, the activation varies for different forgery techniques.
+For DeepFake and FaceSwap, deriving from manipulating the
+whole facial areas, our model successfully focuses on the
+forged areas. However, for Face2Face and NeuralTextures,
+which manipulate partial areas, the focus of the proposed
+W/O 
+CSA
+W/ 
+CSA 
+GT
+RGB
+Figure 5: Visualization of impacts of CSA. GT indicates the forged
+areas. RGB images are from different snippets in the FF++ dataset.
+method shrinks to smaller areas such as mouth and center
+regions. Therefore, our method can learn essential features
+under only video-level supervision.
+Effects of CSA. The CSA is designed to promote cross-
+snippet interaction to form a more comprehensive global
+view. We study the impacts of CSA on the FF++ dataset and
+present the visualization in Figure 5. The pixel-level differ-
+ence map between the original and the forged frame is used
+as the ground truth (GT) manipulation map. It shows that
+CSA helps to comprehensively focus on the forged areas (the
+mouth area of the left example) and suppress the activation
+of irrelevant areas(the neck area of the right example). This
+demonstrates the effectiveness of the CSA.
+Aggregation weights. To intuitively display the learned ag-
+gregate weights in RATF, we select the temporal filterfr with
+the maximum aggregation weight as the representative for
+this spatial position. Then, we aggregate the positions which
+select the same temporal filter and get r maps. As shown
+in Figure 4, we first show the maps for DF and NT attacks
+in the r = 4 setting, and we can see that the forged region
+individually chooses its filter to model their special tempo-
+ral inconsistency, such as the face region in DF attack and
+the mouth region in NT attack. And the other regions like
+background, face contour, non-forged face region also select
+different filters. Moreover, in the r = 8 setting, we display
+the filter map which focuses on the forged face regions, and
+it is obvious that different regions, such as nose, eyes, select
+different filters, which further proves that different regions
+have diverse temporal dynamics, and the necessity of learn-
+ing region-aware temporal inconsistency for the task.
+5 Conclusion
+In this paper, we propose a novel region-aware temporal in-
+consistency learning framework for deepfake video detection,
+which dynamically generates diverse temporal filters for dif-
+ferent forged regions through a novel Region-Aware Tempo-
+ral Filter (RATF) module. To capture the long-term temporal
+inconsistency, we divide the video into multiple snippets and
+propose a Cross-Snippet Attention (CSA) mechanism to pro-
+mote the cross-snippet interaction. The proposed framework
+presents superior performance on four popular benchmarks,
+and extensive visualizations also illustrate its effectiveness.
+Proceedings of the Thirty-First International Joint Conference on Artiﬁcial Intelligence (IJCAI-22)
+925
+Acknowledgements
+This research is supported in part by the National Nat-
+ural Science Foundation of China (No. 61972157 and
+No. 72192821), National Key Research and Develop-
+ment Program of China (No. 2019YFC1521104), Shang-
+hai Municipal Science and Technology Major Project
+(2021SHZDZX0102), Shanghai Science and Technology
+Commission (21511101200), Art major project of National
+Social Science Fund (I8ZD22), National Natural Science
+Foundation of China (No. 72192821) and Shanghai Science
+and Technology Commission (22YF1420300).

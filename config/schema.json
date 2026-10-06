@@ -1,0 +1,19 @@
+{
+  "_note": "Every line here is a modeling decision from the author's capstone experience. Edit freely; code reads this file.",
+  "entities": ["Paper", "Project"],
+  "dimensions": {
+    "modality": ["image", "video"],
+    "goal": ["detection", "generation", "other"],
+    "cue_families": ["sound", "cross_frame_movement", "technical_traces"]
+  },
+  "each_dimension_records": ["claimed", "demonstrated", "evidence"],
+  "relevance_tests": ["problem", "architecture", "output"],
+  "relevance_grades": ["relevant", "partially_relevant", "irrelevant"],
+  "excluded": {
+    "tech_stack": "Frameworks/libraries (PyTorch vs TensorFlow) do not affect whether a paper fits the project.",
+    "confidence_score": "It is an output, not a cue the detector looks at; not a comparison point."
+  },
+  "definitions": {
+    "demonstrated_video_support": "The model uses information across frames or audio-visual sync. Averaging per-frame predictions is treated as an image classifier with an aggregation step (MesoNet case)."
+  }
+}

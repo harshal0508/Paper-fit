@@ -1,0 +1,17 @@
+{
+  "_note": "STARTER keywords seeded from your six cues. YOU must review and extend these; they drive all matching.",
+  "cue_families": {
+    "sound": ["audio", "lip sync", "lip-sync", "lipsync", "waveform", "speech", "voice", "lip", "lips"],
+    "cross_frame_movement": ["temporal", "across frames", "inter-frame", "frame-to-frame", "optical flow", "face consistency", "recurrent", "lstm", "3d convolution"],
+    "technical_traces": ["compression", "artifact", "artefact", "lighting", "illumination", "frequency"]
+  },
+  "modality": {
+    "image": ["image", "images", "still", "frame-level", "per-frame", "single frame"],
+    "video": ["video", "videos", "clip", "sequence of frames"]
+  },
+  "frame_aggregation_phrases": ["averag", "mean of", "aggregat", "frame-level predictions", "per-frame predictions", "isolated frames"],
+  "goal": {
+    "detection": ["detect", "detection", "classif", "forensic", "authentic"],
+    "generation": ["generat", "synthesi", "gan ", "diffusion", "face swap", "face-swap", "reenact"]
+  }
+}

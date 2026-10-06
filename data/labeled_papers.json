@@ -1,0 +1,42 @@
+[
+  {
+    "paperId": "arxiv_1809_00888",
+    "expected_grade": "partially_relevant"
+  },
+  {
+    "paperId": "openalex_W3155203878",
+    "expected_grade": "partially_relevant"
+  },
+  {
+    "paperId": "openalex_W4399138486",
+    "expected_grade": "partially_relevant"
+  },
+  {
+    "paperId": "openalex_W3048932886",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W4390874333",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W3207531490",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W2911424785",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W4304015019",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W4283802557",
+    "expected_grade": "relevant"
+  },
+  {
+    "paperId": "openalex_W4212939825",
+    "expected_grade": "partially_relevant"
+  }
+]

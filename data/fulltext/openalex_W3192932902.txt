@@ -1,0 +1,659 @@
+Dynamic Inconsistency-aware DeepFake Video Detection
+Ziheng Hu1 , Hongtao Xie1∗ , Yuxin Wang1 , Jiahong Li2 , Zhongyuan Wang2 and Yongdong
+Zhang1
+1University of Science and Technology of China
+2Kuaishou Technology
+{hzh519, wangyx58}@mail.ustc.edu.cn,{htxie, zhyd73}@ustc.edu.cn,{lijiahong,
+wangzhongyuan}@kuaishou.com
+Abstract
+The spread of DeepFake videos causes a serious
+threat to information security, calling for effective
+detection methods to distinguish them. However,
+the performance of recent frame-based detection
+methods become limited due to their ignorance of
+the inter-frame inconsistency of fake videos. In this
+paper, we propose a novel Dynamic Inconsistency-
+aware Network to handle the inconsistent prob-
+lem, which uses a Cross-Reference module (CRM)
+to capture both the global and local inter-frame
+inconsistencies. The CRM contains two paral-
+lel branches. The ﬁrst branch takes faces from
+adjacent frames as input, and calculates a struc-
+ture similarity map for a global inconsistency rep-
+resentation. The second branch only focuses on
+the inter-frame variation of independent critical re-
+gions, which captures the local inconsistency. To
+the best of our knowledge, this is the ﬁrst work to
+totally use the inter-frame inconsistency informa-
+tion from the global and local perspectives. Com-
+pared with existing methods, our model provides a
+more accurate and robust detection on FaceF oren-
+sics++, DFDC-preview and Celeb-DFv2 datasets.
+1 Introduction
+With recent advances of deep learning theories like GANs
+[Goodfellow et al., 2014], a series of technologies commonly
+known as DeepFake have emerged, which allow automation
+of facial expression transformation and face swapping pos-
+sible. Though these technologies can make some entertain-
+ment videos, they could also be used to make misinformation
+for fraudulent or malicious purposes. Thus, there is an urgent
+need for automatic detection methods.
+As shown in Figure 1, different from the natural variation
+between real video frames, existing face manipulation tools
+which operate on single frame destroy the consistency be-
+tween adjacent frames and lead to pixel jitter in fake videos.
+In this paper, we deﬁne this problem as an Inconsistent Prob-
+lem, this is an important attribute that distinguishes fake
+videos from real videos. Early works [Fridrich, 2012] focus
+∗Corresponding Author.
+Real(a)
+Fake(a)
+Fake(b)
+Figure 1: The adjacent frames of the real video change naturally,
+while the fake video has the inter-frame inconsistency. As shown in
+example Fake(a), although each frame is quite realistic, there is pixel
+jitter around eyes and mouth (can be obviously seen by playing these
+frames continuously). Example Fake(b) shows the inconsistency of
+artifacts of the same area between adjacent frames.
+on extracting hand-crafted features and employing classiﬁers
+(e.g., SVM) to detect fake videos. These traditional methods
+are less effective with more realistic faces generated. Ben-
+eﬁting from the development of deep learning, some recent
+works [Yang et al., 2019; Li et al., 2018 ] use Convolutional
+Neural Network (CNN) on forgery detection by analysis of
+physiological characteristics (e.g., headpose, eye blink). Be-
+sides, some data-driven CNN-based methods [Chollet, 2017;
+Afchar et al., 2018 ] are also popular, which take a large
+amount of independent frames to train classiﬁers without spe-
+ciﬁc physiological characteristics. In summary, the Inconsis-
+tent Problem of fake videos has not received enough atten-
+tion in existing detection methods. The performance of these
+methods become limited without considering inter-frame in-
+consistency information.
+In this paper, we propose a novel Dynamic Inconsistency-
+aware Network for DeepFake video detection by utilizing
+the inconsistency information between adjacent frames. As
+shown in Figure 2, the DIANet consists of three modules:
+Feature Extracting module, Cross-Reference module(CRM)
+and Classiﬁcation network. Speciﬁcally, the DIANet takes a
+pair of frames as input and obtains their feature representa-
+tions through the Feature Extracing module. Then the pro-
+posed CRM is adopted to capture both the global and local
+inconsistencies between adjacent frames. The CRM contains
+two parallel branches which are called the Global Correlation
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+736
+Feature 
+Extracting
+module
+ Local Association
+branch
+Cross-Reference module
+Classification
+network
+Global Correlation 
+branch
+Real
+Fake
+Reference frame
+Target frame
+4 Local areas coordinates
+Pipeline of our DIANet
+Preprocessing
+𝑉1
+𝑉2
+Concatenate
+𝑊1
+𝐿1
+Video
+Figure 2: The pipeline of the DIANet.
+branch (GCB) and the Local Association branch (LAB). The
+GCB takes faces from adjacent frames as input, and calcu-
+lates a structure similarity map for global inconsistency rep-
+resentation. In contrast, the LAB only focuses on inter-frame
+association of independent critical regions to capture local in-
+consistency. Finally, the global and local inter-frame incon-
+sistencies are combined together and sent into the Classiﬁca-
+tion network for classiﬁcation.
+In experiments, we quantitatively verify the effective-
+ness of utilizing inconsistency information between adjacent
+frames. Beneﬁting from exploring the global and local incon-
+sistencies, our model outperforms existing methods on Face-
+F orensics++(FF++) [Rossler et al., 2019 ], DFDC-preview
+[Dolhansky et al., 2019 ] and shows a good rubustness to
+degradation of video quality and unseen manipulation tech-
+niques.
+The major contributions of our paper include:
+• The DIANet is specially designed to explore the inter-
+frame inconsistency information, which provides a more
+powerful approach to model the inter frame relationship.
+• A novel Cross-Reference module is proposed to cap-
+ture the global structure inconsistency and local incon-
+sistency through two parallel branches, which aims to
+give a complete and robust representation to the incon-
+sistency information between two adjacent frames.
+• Our model outperforms existing methods on popular
+datasets and generalizes well on videos of low quality
+and unseen manipualtion techniques.
+2 Related Work
+2.1 DeepFake Video Detection
+Current DeepFake detection algorithms roughly fall into two
+branches: image-based methods and video-based methods.
+Image-based Methods
+Early image-based methods [Fridrich, 2012 ] are driven by
+hand-crafted features or statistical artifacts that occur dur-
+ing image formation. Some classiﬁers (e.g., SVM) are em-
+ployed to judge whether a video is real or fake. However,
+fake faces are more and more realistic with the emergence
+of new manipulation tools, traditional image-based methods
+become less effective.
+With the development of deep learning [Chollet, 2017;
+He et al., 2016; Wang et al., 2020a; Wang et al., 2020b ],
+CNN-based methods[Yang et al., 2019; Afchar et al., 2018;
+Zhou et al., 2017; Rossler et al., 2019; Shang et al., 2021 ]
+become popular. Part of CNN-based methods are based on
+artifacts of physiological characteristics. [Yang et al., 2019 ]
+proposed an approach to detect by utilizing incoherent head
+poses in fake videos. Another part of methods are data-
+driven without relying on any speciﬁc physiological char-
+acteristics. Researchers are trying various CNN structures,
+such as Xception [Chollet, 2017 ], MesoNet [Afchar et al.,
+2018] and Two-stream [Zhou et al., 2017 ]. Some methods
+[Rahmouni et al., 2017; Bayar and Stamm, 2016 ] put for-
+ward some improvments on the convolutional layer or pool-
+ing layer. Many methods use transfer learning and ﬁne-tuning
+to take advantage of pretrained models [Raja et al., 2017;
+Cozzolino et al., 2018]. Further more, [Nguyen et al., 2019]
+segments the tampered region while classifying. However,
+these methods rely on features within a single frame, without
+consideration of correlation information across frames.
+Video-based Methods
+The second category of detection methods are based on a se-
+quence of frames. [Li et al., 2018 ] developed a network for
+detecting eye blinking by using a temporal approach. Other
+video-based methods include using Recurrent Neural Net-
+work (RNN) [Sabir et al., 2019 ]. These methods take a se-
+quence of frames as input to RNN to tell whether the video
+is real or fake. Though some temporal information is uti-
+lized, they ignore the speciﬁc inconsistency information be-
+tween adjacent frames of fake videos. Different from them,
+our method explore the inconsistency information by a novel
+cross-reference module from the global and local perspec-
+tives.
+2.2 Attention Mechanism in Neural Network
+Various attention mechanisms which are inspired by human
+perception [Denil et al., 2012] have been widely studied. The
+attention mechanism enables neural network to pay attention
+to a speciﬁc subset of inputs. In addition, many works pro-
+pose spatial and channel-wise mechanism to pay attention to
+part of image dynamically. In this way, the trained models
+can focus on regions or segments selectively. Different from
+these works, our cross reference mechanism is used to capture
+the global and local relationship across different frames.
+3 Proposed Method
+We propose the DIANet for effective DeepFake video detec-
+tion, by utilizing inconsistency information between adjacent
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+737
+Original faces Manipulated faces
+Real video Fake video
+Manipulation:
+Deepfakes
+Face2Face
+FaceSwap
+NeuralTextures
+·
+·
+Crop face in 
+each frame
+Blend face into 
+original frame
+Figure 3: Overview of a typical video manipulation process.
+frames with account of the whole face and the local criti-
+cal areas. In this section, we ﬁrst introduce the preliminary
+knowledge which helps to understand our motivation. Then
+we describe the overall pipeline of the DIANet. And then we
+will introduce the proposed CRM in more detail. Finally, we
+introduce how the Classiﬁcation network gives the classiﬁca-
+tion result.
+3.1 Preliminary Knowledge
+With recent advancement of techniques [DeepFakes, 2019;
+Thies et al., 2016; FaceSwap, 2019; Yu et al., 2019; Yu et
+al., 2020], it is possible for people to conduct facial expres-
+sion transformation and face swapping automatically. The
+most popular methods are Deepfakes [DeepFakes, 2019 ],
+Face2Face [Thies et al., 2016 ] and FaceSwap [FaceSwap,
+2019]. A typical video face manipulation process consists
+of three steps: (1) Decompose the original video into frames.
+Detect face in each frame and crop it. (2)Manipulate face im-
+ages by the pretrained manipulation model. (3) Blend each
+manipulated face back into the corresponding original frame.
+Because the manipulation is operated on independent
+frames, the natural variation of face in the original video is
+destroyed. This results in micro dynamic jitters and inconsis-
+tency across adjacent frames which are ignored by existing
+detection methods.
+3.2 Pipeline of DIANet
+As shown in Figure 2, the proposed DIANet consists of
+three modules: (1) Feature Extracting module. (2) Cross-
+Reference module (CRM). (3) Classiﬁcation network. We
+call the frame to be distinguished as the target frame. Firstly,
+we select one adjacent frame as the reference frame and pre-
+process these two frames. The preprocessing includes crop-
+ing the whole face region and detecting the coordinates of
+critical areas. All the following ”frames” refer to the face
+region image in the corresponding frame. Secondly, the Fea-
+ture Extracting module extracts feature representations of two
+frames respectively. The Feature Extracting module is based
+on ResNet [He et al., 2016]. There are ﬁve Bottleneck layers,
+designated as layer1 to layer5. Each Bottleneck layer con-
+sists of three convolutional layers with BatchNormalization
+and ReLU. We take the feature map after Bottleneck layer5
+as the output of the Feature Extracting module. The fea-
+ture representations of the target and the reference frames are
+marked as V1 and V2 respectively.
+Thirdly, we calculate the inconsistency map X1 based on
+feature representations V1 and V2 through the CRM. Finally,
+the Classiﬁcation network gives the classiﬁcation result Y of
+the target frame according to the inconsistency map X1. The
+speciﬁc implementation of the CRM and the Classiﬁcation
+network will be described in more detail as follows.
+3.3 Cross-Reference Module (CRM)
+As shown in Figure 2, the proposed CRM uses the feature rep-
+resentations V1 and V2∈RC×H×W obtained by the Feature
+Extracting module and the coordinates of four local critical
+areas as input. It includes two branches: the Global Correla-
+tion branch (GCB) and the Local Association branch (LAB).
+The GCB uses features of whole faces in two frames to gen-
+erate the structure similarity map W1. In contrast, the LAB
+ﬁrst implements RoIPooling to obtain four local critical areas
+features (i.e. two eyes, nose, mouth) with the same size, and
+then calculate the local inconsistence features L1 which re-
+ﬂects regional inconsistency of adjacent frames. In the end,
+L1 are concatenated with W1 to generate the inconsistency
+map X1, as the output of the CRM:
+X1 = concatenate(W1, L1) (1)
+Global Correlation Branch (GCB)
+To explore the global long-range inconsistency information
+between the input two frames, The GCB takes feature repre-
+sentations of whole faces V1 and V2 as input. The procedure
+of the GCB is illustrated in Figure 4(a). More speciﬁcally, we
+ﬁrst compute the afﬁninty matrix A12 between V1 and V2:
+A12 = VT
+1 QV2 (2)
+where V1 and V2 are ﬂattened to C×(W H). Q∈RC×C is the
+weight matrix and can be implemented by a linear layer. As a
+result, each entry of A12 reﬂects the similarity between each
+row of VT
+1 and each column of V2.
+After obtaining the afﬁninty matrix A12, we compute at-
+tention summaries Z12 for V1:
+Z12 = V1A12 (3)
+Then a convolution operation with N ﬁlters{ωi
+G, bi
+G}N
+i=1
+is performed for V1. For the generation of correspongding N
+heatmaps, another group of ﬁlters{ωi
+Z, bi
+Z}N
+i=1 is applied for
+Z12. They are calculated as follows:
+Gi
+1 = V1ωi
+G + bi
+G, f or i = 1, 2, ..., N (4)
+Ii
+12 = Sof tmax(Z12ωi
+Z + bi
+Z), f or i = 1, 2, ..., N (5)
+The heatmaps are utilized to perform channel-wise selec-
+tion as follows:
+I1 = concatenate(G1
+1⊙ I 1
+12, ..., GN
+1 ⊙ IN
+12) (6)
+where′⊙′ denotes the element-wise multiply. In order to keep
+consistent with the output size of the LAB, a maximum pool-
+ing is performed:
+W1 = M axP ool(I1) (7)
+W1 represents the structure similarity map which reﬂects the
+global inconsistency. The dimension of W1 is C×H′×W′.
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+738
+Linear
+(HW,HW)
+𝑉1 𝑉2
+𝐴12 = 𝑉1
+𝑇𝑄𝑉2
+𝑍12 = 𝑉1𝐴12
+Conv
+Conv
+MaxPool
+𝐶 × 𝐻 × 𝑊
+Flatten to 
+𝐶 × 𝐻𝑊
+𝐶 × 𝐻𝑊
+𝐶 × 𝐻𝑊
+Conv,bn,ReLU,AveragePool
+Fully-connected (512,1024)
+Dropout,ReLU
+Fully-connected (1024,1024)
+Dropout,ReLU
+Fully-connected (1024,2)
+Softmax
+[𝑝0, 𝑝1]
+RoIPool
+ RoIPool
+𝑉1 𝑉24 Local areas 
+coordinates
+𝒓𝒊
+𝒋: 𝟒 ×[C×H’×W’]
+Conv
+𝜃: 1 × 1 × 1
+Conv
+𝜑: 1 × 1 × 1
+Conv
+g: 1 × 1 × 1
+(a)Global Correlation branch (b)Local Association branch (c) Classification network
+𝟒 × [C×H’W’×1]
+Add up to C×H’W’×1
+Flatten back to
+𝑳1: C×H’×W′
+Flatten to
+𝟒 × [C×H’W’×1]
+𝑿1 = [𝐿1, 𝑊1]
+𝑾1: 𝐶 × 𝐻′ × 𝑊′
+𝑄
+Figure 4: The details of Global Correlation branch(GCB), Local Association branch(LAB) and Classiﬁcation network.′⊗′ represents matrix
+multiply.′⊕′ represents element-wise add.′⊙′ denotes the element-wise multiply.
+Local Association Branch (LAB)
+Face manipulation tools often produce different fake textures
+at the same area in adjacent frames. As a result, fake tex-
+tures of local areas are inconsistent. Motivated by this, we
+design the LAB to mine inconsistency of independent criti-
+cal areas across frames. The local semantic areas which the
+LAB focuses on are two eyes, nose and mouth whose posi-
+tions are extracted by RetinaFace [Deng et al., 2020 ] in the
+preprocessing.
+The procedure of the LAB is illustrated in the Figure 4(b).
+For V1 and V2 whose dimension is C×H×W , we ﬁrst imple-
+ment RoIPooling of four local semantic areas based on their
+positions to obtain eight local representions rj
+i with the same
+dimension:
+rj
+i = RoIPool(Vi, lj) f or i = 1, 2, j = 1, 2, 3, 4 (8)
+where lj is a four-dimension vector which represents coordi-
+nates of area j. The dimension of rj
+i is set as C×H′×W′.
+Then we ﬂatten rj
+i to C×H′W′×1 and concatenate these
+four RoI features in axis-1 to get r1, r2∈RC×4H ′W ′×1 re-
+spectively.
+Next, the relationship matrix between r1 and r2 is calcu-
+lated:
+v = Sof tmax(r1ΩT
+θ ΩφrT
+2 ) (9)
+where Ωθ and Ωφ represents that r1 and r2 pass through a
+1×1×1 convolutional layer respectively and the dimension
+of v is C×4H′W′×4H′W′.
+Then the local discriminating features can be obtained:
+r′
+1 = r1 + Ωz(g(r1)v) (10)
+Here the dimension of r′
+1 is C×4H′W′×1. we split r′
+1 into
+four C×H′W′×1 matrixs and add them up to aC×H′W′×1
+matrix. Finally, we ﬂatten this C×H′W′×1 matrix back to
+C×H′×W′ as the local inconsistency information L1.
+In summary, the GCB takes the whole face features as in-
+put to calculate the structure similarity map W1, while the
+LAB only focuses on the regional discriminating features to
+capture local inconsistency information L1.
+3.4 Classiﬁcation Network
+W1 and L1 are concatenated together and sent into the Clas-
+siﬁcation network for classiﬁcation. As shown in Figure 4(c),
+the Classiﬁcation network consists of one convolutional layer
+and three fully connected layers, equipped with BatchNor-
+malization, average pooling, ReLU, Dropout and Softmax.
+The speciﬁc size and parameter settings of every layer are
+detailed in the ﬁgure. The output of the Classiﬁcation net-
+work is a two dimensional vector [p0, p1] and the ﬁnal result
+Y ∈ [0, 1]is calculated by p0/(p0 + p1). The closer Y is to 1,
+the more likely the target frame has been manipulated.
+In the training phase, we use cross-entropy (CE) loss:
+LossCE(p, y)
+= 1
+2
+∑1
+i=0[yilog(pi) +
+(1  yi)log(1  pi)] (11)
+Where [p0, p1] is the output
+of the Classiﬁcation network.
+[y0, y1] is the ground truth of the input frames. If the input
+frames are sampled from a real video, [y0, y1] = [0 , 1]. In
+contrast, a fake video is labeled as [y0, y1] = [1, 0].
+4 Experiments
+4.1 Experiment Setup
+Dataset Setting
+To verify the effectiveness and generalization of the proposed
+DIANet, we conduct experiments on multiple datasets: Face-
+Forensics++ (FF++) [Rossler et al., 2019 ], Celeb-DeepFake
+v2 (Celeb-DFv2) [Li et al., 2020b ] and DeepFake Detec-
+tion Challenge preview (DFDC-preview) [Dolhansky et al. ,
+2019]. FF++ is a large scale dataset consisting of 1000 real
+videos that have been manipulated with four popular meth-
+ods: Deepfakes (DF) [DeepFakes, 2019 ], Face2Face (F2F)
+[Thies et al., 2016 ], FaceSwap (FS) [FaceSwap, 2019] and
+NeuralTextures (NT) [Thies et al., 2019]. Celeb-DFv2 is an-
+other large scale DeepFake video dataset with many differ-
+ent subjects (e.g., ages, ethic groups, gender), including 590
+real videos and 5639 fake videos with reduced visual arifacts.
+DFDC-preview is a dataset for Facebook DeepFake Detection
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+739
+Figure 5: Evaluation of different reference frame intervals. The met-
+ric standard is frame-level AUC.
+w/o eyes w/o nose w/o mouth all
+AUC 94.54 94.58 94.90 95.23
+Table 1: Evaluation of using four critical regions of the LAB on the
+FF++ (LQ) dataset. The metric standard is frame-level AUC.
+Challenge, including 855 real videos and 3618 fake videos.
+Training and testing sets are divided according to the ofﬁcial
+video lists respectively. All the characters in our illustrations
+come from these public datasets. In the preprocessing, we use
+OpenCV to extract each frame in the video. For each frame,
+we detect the face region and four key points (two eyes, nose
+and mouth) by RetinaFace [Deng et al., 2020].
+Implementation Detail
+The input images are resized to 3×224×224. The dimension
+of the feature representation V1 and V2 is 256×29×29. The
+output dimension of RoIPooling (i.e. the size of W1 and L1)
+is 256×14×14. The GCB and LAB are trained with SGD.
+The SGD optimizer is used with an initial learning rate of1×
+10 3 with momentum of 0.9 and weight decay of 1× 10 4.
+During training, the batchsize is set to 32.
+4.2 Ablation Study
+Ablation Study on Selection of Reference Frame
+The DIANet takes two frames as input. One frame is called
+the target frame, and another is called the reference frame.
+After the target frame is determined, the selection of refer-
+ence frame will affect the prediction result. The frame rate
+of videos in datasets is 30 frames per second. We test differ-
+ent selection intervals, from 1 frame to 30 frames. As shown
+in Figure 5, in general, the performance is not very sensitive
+to different selection intervals. The best effect is got in the
+interval between 5 and 15 frames for different manipulation
+types. On the one hand, if the interval between these two
+frames is too close, the pixel change is too small to capture
+the inconsistency information. On the other hand, if the in-
+terval is long, the face may have a change in action. In order
+to consider different kinds of manipulation types and get the
+best balanced effect, we randomly select the reference frame
+between 5 and 15, corresponding to 1/6 second and 1/2 sec-
+ond respectively.
+GCB LAB DF F2F FS NT
+- - 98.60 94.02 97.46 83.51
+✓ - 98.71 94.35 97.71 84.76
+- ✓ 97.48 91.22 96.29 82.01
+✓ ✓ 99.27 95.91 98.79 87.57
+Table 2: Evaluation of the effectiveness of the GCB and the LAB on
+the FF++ (LQ) dataset. The metric standard is frame-level AUC.
+FF++(LQ) FF++(HQ)
+Method Acc(%) AUC(%) Acc(%) AUC(%)
+Steg.Features 55.98 - 70.97 -
+LD-CNN 58.69 - 78.45 -
+Constrained Conv 66.84 - 82.97 -
+MesoNet 70.47 - 83.10 -
+Xception 82.71 89.3 95.04 96.3
+DSP-FW A - 59.2 - 56.9
+Face X-ray - 61.6 - 87.4
+F3-Net 86.89 93.3 97.31 98.1
+Two-branch - 86.6 - 98.7
+Ours 89.77 94.5 96.37 98.8
+Table 3: Performance on the FF++ HQ and LQ dataset.
+Ablation Study on Critical Regions
+Since the manipulated textures are inconsistent at the same
+area in adjacent frames, we design the LAB to explore the
+association of several independent critical regions. The facial
+expressions of characters are mainly determined by various
+organs. Speaking needs movement of mouth and blinking
+needs movement of eyes. The artifacts of mouth and eyes in
+the manipulated video often spread to the nose area connected
+with them. Thus we conduct experiments with these four re-
+gions of the face (i.e. two eyes, nose, mouth). As shown in
+Table 1, when the LAB uses all these four regions, AUC is the
+highest. When we reduce any of them, the effect decreases in
+varying degrees. This reﬂects that all the four regions have a
+positive effect.
+Ablation Study on Each Branch
+As shown in Table 2, to verify the effectiveness of the CRM
+with the GCB and the LAB, we compare four structures.
+When both two branches are not added, the feature represen-
+tation of the target frame is directly used for classiﬁcation.
+In this situation, it only gains average AUC of 93.40%, sim-
+ilar to common structures like MesoNet and Xception. Af-
+ter adding the GCB, the performance shows a considerable
+improvement. The AUC of each kind tampered video is in-
+creased by 0.49% on average. Only using the LAB gets the
+worst performance. This is because only features of eyes,
+nose and mouth are used while the rest of the features are
+discarded. However, when the local inconsistency is com-
+bined with the global inconsistency, best improvement can be
+achieved. The best results are obtained by adding all the two
+branches. This demonstrates the effectiveness of the CRM
+and mutual promotion of global and local inconsistencies.
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+740
+Method Acc(%) AUC(%)
+RNN 78.74 82.41
+Xception 82.87 86.96
+Ours 85.83 90.54
+Table 4: Performance on the DFDC-preview dataset.
+Test set
+Method FF++(LQ) Celeb-DFv2
+Two-stream - 53.8
+MesoNet - 54.8
+HeadPose - 54.6
+Multi-task 62.0 54.3
+Xception-RAW - 48.2
+Xception-HQ 87.3 65.3
+Xception-LQ - 65.5
+DSP-FW A 62.0 64.6
+Face X-ray 72.8 -
+Ours 90.4 70.4
+Table 5: Experiments of cross-quality and cross-dataset experi-
+ments. The second column are models trained on FF++ (HQ) and
+tested on FF++ (LQ). The third column are models trained on FF++
+and tested on Celeb-DFv2. The metric standard is frame-level AUC.
+4.3 Comparison with Recent Works
+We ﬁrst conduct in-dataset experiments on FF++ and com-
+pare with prior famous works such as MesoNet [Afchar et
+al., 2018], Xception [Rossler et al., 2019] and Face X-ray [Li
+et al., 2020a ]. To get a comprehensive evaluation, we report
+both Accuracy (Acc) and Area Under Curve (AUC) of each
+method. FF++ contains three grades of video quality: raw
+qualtiy (RAW), high quality (HQ) and low quality (LQ). On
+the RAW videos, almost all CNN-based methods including
+ours can achieve quite high results (> 0.99), therefore it can
+only have a slight improvment. However, on the HQ and LQ
+videos, our method has a obvious improvment. As shown in
+Table 3, our method gains the highest AUC of 98.8% on HQ
+and 94.5% on LQ videos, even competitive with the latest al-
+gorithms F3-Net[Qian et al., 2020 ] and Two-branch[Masi et
+al., 2020].
+Performance on DFDC-preview
+We also conduct experiments on the latest DFDC-preview
+dataset. As shown in Table 4. We reproduce the RNN struc-
+ture according to the paper [Sabir et al., 2019]. Compared to
+Xception and RNN, the DIANet gains the highest Accuracy
+and AUC. This further proves the applicability of the DIANet.
+Robustness to Video Quality
+In real internet scenes, fake videos will be uploaded and
+downloaded many times in the process of spreading, video
+quality will be gradually reduced. Many manipulated arti-
+facts are blurred and some noises are introduced with the
+decrease of image quality. This will misleads the extracted
+features and leads to wrong judgment. As shown in Table
+3, the DIANet performs better than previous methods on the
+LQ videos, which demonstartes our method has stronger de-
+tection capability for heavily low quality videos. In addition,
+we use the models trained on a certain video quality to de-
+tect videos of other qualities. As shown in the second column
+of Table 5, part of methods like DSP-FW A and Face X-ray,
+when they are trained on high quality videos and tested on low
+quality videos, their performance decreased seriously. Their
+AUC drops below 75%, and the accuracy will be close to ran-
+dom judgment. These results reﬂect that the features con-
+cerned by these existing methods are easily to be destroyed
+by the degradation of image quality. Compared with them,
+the DIANet still maintains considerable detection ability in
+the cross-quality experiments. This shows that the global and
+local inconsistencies are more robust to video quality.
+Robustness to Unknown Techniques
+We use Celeb-DFv2 dataset for testing generalization ability
+of the proposed DIANet and do a more comprehensive com-
+parison with existing works. We use four types of manipula-
+tion videos in FF++ to train models and test them on Celeb-
+DFv2 directly. AUC score is used as the metric for evalu-
+ating our approach. The third column of Table 5 shows the
+performance of existing methods and the DIANet in spotting
+fake videos on Celeb-DFv2. Results show that the DIANet
+reaches an AUC score of70.4% on the testing set provided in
+Celeb-DFv2 and outperforms all the existing works includ-
+ing Xception, MesoNet and DSP-FW A. According to the re-
+sults in Table 5, when current models trained on a speciﬁc
+dataset detect some fake videos utilizing various unknown
+techniques, their effect will be greatly reduced. This reﬂects
+cross-dataset detection is still a challenging task.
+5 Conclusion
+Motivated by that the inconsistent problem of fake videos has
+not received enough attention in existing face manipulation
+video detection methods, in this work we propose the DIANet
+to explore the inter-frame inconsistency information. The
+GCB and the LAB in the CRM are adopted to integrate both
+the global and local inconsistencies. We conducted exten-
+sive experiments on popular datasets (i.e., FaceF orensics++,
+DFDC-preview and Celeb-DFv2). The results demonstrate
+the effectiveness of the CRM. Compared with existing meth-
+ods, the DIANet obtains competitive performance on various
+qualities of fake videos and have strong robustness to degra-
+dation of video quality and unseen manipulation techniques.
+The inconsistency is an import characteristic of fake videos,
+which still has a lot of mining space in the future to improve
+the detection performance.
+Acknowledgements
+This work is supported by the National Key Research and
+Development Program of China (2018YFB0804203), the
+National Nature Science Foundation of China (62022076,
+U1936210, 62032006), the China Postdoctoral Science Foun-
+dation (2020M682035),the Anhui Postdoctoral Research Ac-
+tivities Foundation (2020B436), the Youth Innovation Pro-
+motion AssociationChinese Academy of Sciences (2017209),
+and the Fundamental Research Funds for the Central Univer-
+sities under Grant WK3480000011.
+Proceedings of the Thirtieth International Joint Conference on Artiﬁcial Intelligence (IJCAI-21)
+741

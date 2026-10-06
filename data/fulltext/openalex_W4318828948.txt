@@ -1,0 +1,214 @@
+
+proposed method to the FakeAVCeleb videos dataset for two 
+levels; visual video frames and audio. The visual video frames 
+and audio modalities are trained end-to-end separately. Thus, a 
+single GRU -based attention mechanism with 1024 units is 
+independently applied to the visual video features that are 
+extracted using the proposed upgraded XceptionNet and the 
+audio features that are extracted using the proposed CQT based 
+modified IncetionResNetV2. This learns the instructive 
+temporal features for each unimodality. The visual video 
+modality is trained for 32 epochs using the stochast ic gradient 
+descent (SGD) optimizer [57] with a learning rate of      
+which is decayed by      , and a momentum of 0.9. The audio 
+modality is trained for 27 epochs using the adaptive moment 
+(Adam) optimizer [58] with a learning rate of    . The batch 
+size is 32. Then, the predictions are produced per modality. 
+The performance of visual video and audio on the 
+FakeAVCeleb dataset is shown in Table I and Table II, 
+respectively. The proposed upgraded XceptionNet with a 
+single GRU -based attention mechanism for t he visual video 
+modality has achieved 98.51% accuracy and 98.45% AUROC 
+outperforming recent state -of-the-art methods by a large 
+margin. Additionally, the proposed CQT based modified 
+InceptionResNetV2 with a single GRU -based attention 
+mechanism for the audi o modality has achieved 97.52% 
+accuracy and 97.62%  AUROC outstanding other state -of-the-
+art methods by a large margin. 
+Experiment 2: In this experiment, the prediction results of 
+visual video frames and audio modalities from experiment 1 
+are employed to produce the prediction for the whole video. 
+Thus, the whole multimodal -video prediction is decided to be 
+genuine if both modalities are predicted as genuine, otherwise, 
+it’s deepfake. Experiment 2 performance for multimodal video 
+deepfake detection is reco rded in Table III. It has yielded 
+96.04% accuracy and 95.49% AUROC. 
+Experiment 3: This experiment represents applying the 
+proposed method to the FakeAVCeleb videos dataset for the 
+third level; whole multimodal video. As the FakeAVCeleb 
+dataset is distribut ed into four groups: genuine visual videos 
+and audios, genuine visual videos with fake audios, fake visual 
+videos with genuine audios, fake visual videos and audios, the 
+whole video label (  ) is considered genuine if the label of 
+both visual video (   ) and audio (   ) modalities are genuine, 
+otherwise, it’s fake. This can be defined as follows: 
+   {               
+                        (19) 
+The single GRU -based attention mechanism with 3572 
+units is applied to the bimodal information -based video 
+features. This helps to learn the instructive temporal features 
+for the whole multimodal video. The details of GRU -based 
+attention mechanism layers that are applied on top of bimodal 
+information-based video features are described in Table IV. 
+The proposed method is trained for 24 epochs using the SGD 
+optimizer with a learning rate of      and a decay factor of 
+     , and a momentum of 0.9. This is employed to update the 
+weight parameters and  is aimed to minimize the difference 
+between actual and predicted labels. The batch size is set to 64. 
+TABLE I. THE PERFORMANCE OF THE UPGRADED XCEPTIONNET METHOD WITH SINGLE GRU-BASED ATTENTION MECHANISM FOR DETECTING THE 
+DEEPFAKE VISUAL VIDEO UNIMODALITY COMPARED TO RECENT STATE-OF-THE-ART METHODS ON THE FAKEAVCELEB DATASET 
+Model 
+Unimodality 
+Visual video 
+Accuracy AUCROC 
+Experiment 1 (The proposed upgraded XceptionNet with GRU-based attention mechanism for the first level) 98.51% 98.45% 
+VGG16 [60] 81.03% 81.04% 
+Xception [7] 73.06% 73.07% 
+TABLE II. THE PERFORMANCE OF THE MODIFIED INCEPTIONRESNETV2 METHOD WITH SINGLE GRU-BASED ATTENTION MECHANISM FOR DETECTING THE 
+DEEPFAKE AUDIO UNIMODALITY COMPARED TO RECENT STATE-OF-THE-ART METHODS ON THE FAKEAVCELEB DATASET 
+Model 
+Unimodality 
+Audio 
+Accuracy AUCROC 
+Experiment 1 (The proposed CQT based modified 
+InceptionResNetV2 with GRU-based attention mechanism for the second level) 97.52% 97.62% 
+Mel-frequency cepstrum (MFC)+ VGG16 [60] 67.14% 67.13% 
+ 
+MFC+ Xception [60] 76.26% 76.25% 
+(IJACSA) International Journal of Advanced Computer Science and Applications, 
+Vol. 14, No. 1, 2023 
+416 | P a g e  
+www.ijacsa.thesai.org 
+(CQT [61] + MobileNet) [14] 82.67% 82.38% 
+TABLE III. THE PERFORMANCE OF THE PROPOSED METHOD FOR DETECTING WHOLE MULTIMODAL VIDEO DEEPFAKES COMPARED TO RECENT STATE-OF-THE-
+ART METHODS ON THE FAKEAVCELEB DATASET 
+Model 
+Bimodal 
+Visual video and audio 
+Accuracy AUCROC 
+Experiment 2 96.04% 95.49% 
+Experiment 3 (The proposed method for the third level: whole multimodal video) 97.52% 97.21% 
+Ensemble Soft/ hard voting based VGG16 [60] 78.04% 78.05% 
+Two CNN blocks (one per modality) [60] 67.4% 67.2% 
+Xception [7] 43.94% 43.73% 
+TABLE IV. THE GRU-BASED ATTENTION MECHANISM LAYERS DETAILS 
+Layer (type) Output shape Parameters number 
+main_input (Input Layer) [(None, 8, 4096)] 0 
+gru (GRU) (None, 8, 3572) 82191720 
+attention (attention) (None, 3572) 3580 
+Total parameters: 82,195,300 
+Trainable parameters: 82,202,446 
+Non-trainable parameters: 0 
+The cross -entropy loss ( ) function is utilized to measure 
+the efficiency of the suggested deepfake video detection 
+method on three levels: video frames, audio, and the whole 
+video. Its formula [59] is defined as follows: 
+   
+ 
+  ∑ (     (  )  (    )    (    )) 
+     (20) 
+where   refers to the number of visual videos, audios, or 
+whole videos . The    and    denote the actual label and 
+predicted probability corresponding to the     video. It can be 
+seen in Table III that the proposed method, which represents 
+experiment 3, for whole multimodal video deepfake detection 
+has achieved 97.52% accuracy and 97.21% AUROC. Its 
+performance exceeds that of experiment 2 because experiment 
+2 is unable to learn intercorrelations between different 
+modalities. Additionally, it outperforms recent stat e-of-the-art 
+methods by an average growth of 34.4% accuracy and 34.2% 
+AUROC as can be seen in Table III. 
+The experiments are carried out using an OMEN HP laptop 
+with a 16 -gigabyte Intel (R) Core (TM) i7 -9750H CPU, a 6 -
+gigabyte RTX 2060 GPU, and Windows 11.  The proposed 
+method is implemented using the Python programming 
+language. Python libraries such as Keras, OpenCV, Random, 
+Tensorflow, Numpy, OS, and Librosa are used during the 
+implementation. 
+The accuracy and loss curves of the proposed method on 
+the training and validation subsets of the FakeAVCeleb dataset 
+for the three levels; visual video frames, audio, and whole 
+multimodal videos,  are shown in Fig. 7. Additionally, the 
+proposed method confusion matrix for deepfake video 
+detection on the three levels is depicted in Fig. 8. Furthermore, 
+Fig. 9 shows the receiver operating characteristic (ROC) curve 
+and the AUROC curve of the proposed method performance. 
+As shown in Fig. 9, the ROC curve is extremely close to the 
+top left ensuring the high performance of the proposed method. 
+Fig. 10 provides a comparison of the proposed method with 
+contemporary state -of-the-art methods using evaluation 
+metrics. As shown in Fig. 10, the proposed method has yielded 
+better performance in comparison to the other methods on th e 
+three levels. It has a precision of 96.91%, recall of 100%, F1 -
+score of 98.43%, and specificity of 97.22% for detecting visual 
+videos. Additionally, it has a precision of 100%, recall of 
+95.10%, F1 -score of 97.49%, and specificity of 100% for 
+detecting audios. Further, it has a precision of 98.43%, recall of 
+97.66%, F1 -score of 98.04%, and specificity of 97.30% for 
+detecting whole multimodal videos. 
+It can be concluded that the proposed upgraded 
+XceptionNet generated a useful spatial hierar chical 
+representation of faces, which contributed to distinguishing 
+between genuine and fake videos. As well, the proposed CQT-
+based modified InceptionResNetV2 produced a valuable deep 
+time-frequency representation of audio. This assisted to reveal 
+deepfake videos and im proved the detection method's 
+effectiveness. Moreover, a concatenate layer that is applied to 
+the features extracted from visual video and audio modalities 
+produced an informative bimodal representation of videos. In 
+addition, the GRU -based attention mecha nism, which is 
+applied to the visual video, audio, and bimodal features, 
+assisted in capturing the most important temporal information 
+of videos. This in turn helped to detect the deepfakes. 
+Furthermore, it can be inferred that correlating features from 
+different modalities can improve the chances of achieving 
+accurate deepfake video detection. 
+(IJACSA) International Journal of Advanced Computer Science and Applications, 
+Vol. 14, No. 1, 2023 
+417 | P a g e  
+www.ijacsa.thesai.org 
+ 
+Fig. 7. The accuracy and loss curves of the proposed deepfake video detection method on training and validation sets. 
+ 
+Fig. 8. The confusion matrix visualization of the proposed deepfake video detection method. 
+ 
+Fig. 9. The ROC curve and the AUROC curve of the proposed deepfake video detection method performance. 
+ 
+Fig. 10. The evaluation metrics of the proposed deepfake video detection method compared to recent state-of-the-art methods on the FakeAVCeleb dataset. 
+V. CONCLUSION AND FUTURE WORK 
+A newly smart system for detecting video deepfakes  has 
+been presented. Two methods were proposed to extract features 
+from visual video frames and audio modalities, respectively. 
+These methods produced useful spatial information for visual 
+video and valuable time -frequency information for audio, 
+which impr oved the performance of the deepfake detection 
+method. In addition, the feature representations of both 
+modalities were passed into a mid -layer to produce an 
+informative bimodal representation per video. It proved that 
+using bimodal information boosts lear ning during training 
+compared to the method that ignores intercorrelation between 
+modalities. The GRU -based attention mechanism was then 
+applied to the different feature representations to extract the 
+most significant temporal information and detect the 
+
+(IJACSA) International Journal of Advanced Computer Science and Applications, 
+Vol. 14, No. 1, 2023 
+418 | P a g e  
+www.ijacsa.thesai.org 
+deepfakes. The proposed method has been evaluated on the 
+FakeAVCeleb multimodal videos dataset. It achieved 98.51% 
+accuracy, 98.45% AUROC, 96.91% precision, 100% recall, 
+98.43% F1-score, and 100% sensitivity on the first level; visual 
+videos. Additionally, i t yielded 97.52% accuracy, 97.62%  
+AUROC, 100% precision, 95.10% recall, 97.49% F1 -score, 
+and 95.10% sensitivity on the second level; audios. Moreover, 
+it attained 97.52% accuracy, 97.21% AUROC, 98.43% 
+precision, 97.66% recall, 98.04% F1-score, 97.66% sensitivity, 
+and 97.30% specificity on the third level; whole multimodal 
+videos. Consequently, the proposed method outperformed the 
+current state-of-the-art methods by a large margin. 
+In the future, several optimization algorithms can be 
+employed to enhance the  performance of the proposed 
+deepfake video detection method. Furthermore, a huge 
+multimodal video dataset may be utilized to improve the 
+detection method's performance. 

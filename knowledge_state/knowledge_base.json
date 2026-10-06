@@ -1,0 +1,3053 @@
+{
+  "schema": {
+    "_note": "Every line here is a modeling decision from the author's capstone experience. Edit freely; code reads this file.",
+    "entities": [
+      "Paper",
+      "Project"
+    ],
+    "dimensions": {
+      "modality": [
+        "image",
+        "video"
+      ],
+      "goal": [
+        "detection",
+        "generation",
+        "other"
+      ],
+      "cue_families": [
+        "sound",
+        "cross_frame_movement",
+        "technical_traces"
+      ]
+    },
+    "each_dimension_records": [
+      "claimed",
+      "demonstrated",
+      "evidence"
+    ],
+    "relevance_tests": [
+      "problem",
+      "architecture",
+      "output"
+    ],
+    "relevance_grades": [
+      "relevant",
+      "partially_relevant",
+      "irrelevant"
+    ],
+    "excluded": {
+      "tech_stack": "Frameworks/libraries (PyTorch vs TensorFlow) do not affect whether a paper fits the project.",
+      "confidence_score": "It is an output, not a cue the detector looks at; not a comparison point."
+    },
+    "definitions": {
+      "demonstrated_video_support": "The model uses information across frames or audio-visual sync. Averaging per-frame predictions is treated as an image classifier with an aggregation step (MesoNet case)."
+    }
+  },
+  "nodes": [
+    {
+      "id": "arxiv_1809_00888",
+      "type": "Paper",
+      "title": "MesoNet: a Compact Facial Video Forgery Detection Network",
+      "year": 2018,
+      "demonstrated_source": "fulltext",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "3.4 Image aggregation\nOne downside of video analysis, especially online videos, is the compression which causes a huge loss of information.",
+              "3.5 Aggregation on intra-frames\nTo extend our study of the effect of video compression on forgery detection, we have conducted the same image aggregation but only with intra-frames of compressed videos, i.e."
+            ]
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": false,
+            "evidence": [
+              "3.4 Image aggregation\nOne downside of video analysis, especially online videos, is the compression which causes a huge loss of information.",
+              "A natural way of doing so is to average the network prediction over the video."
+            ]
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "The flip side is that videos only lasting a few second may contain as little as three I-frames, which cancels out the expected smoothing effect of the aggregation."
+            ]
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": false,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "3.4 Image aggregation\nOne downside of video analysis, especially online videos, is the compression which causes a huge loss of information.",
+              "3.5 Aggregation on intra-frames\nTo extend our study of the effect of video compression on forgery detection, we have conducted the same image aggregation but only with intra-frames of compressed videos, i.e."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3155203878",
+      "type": "Paper",
+      "title": "A Survey on Deepfake Video Detection",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4399138486",
+      "type": "Paper",
+      "title": "Deepfake video detection: challenges and opportunities",
+      "year": 2024,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3048932886",
+      "type": "Paper",
+      "title": "Sharp Multiple Instance Learning for DeepFake Video Detection",
+      "year": 2020,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4390874333",
+      "type": "Paper",
+      "title": "TALL: Thumbnail Layout for Deepfake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3207531490",
+      "type": "Paper",
+      "title": "Spatiotemporal Inconsistency Learning for DeepFake Video Detection",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W2911424785",
+      "type": "Paper",
+      "title": "Deepfake Video Detection Using Recurrent Neural Networks",
+      "year": 2018,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4304015019",
+      "type": "Paper",
+      "title": "Deepfake Video Detection with Spatiotemporal Dropout Transformer",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4283802557",
+      "type": "Paper",
+      "title": "Delving into the Local: Dynamic Inconsistency Learning for DeepFake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3110828385",
+      "type": "Paper",
+      "title": "ID-Reveal: Identity-aware DeepFake Video Detection",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4280579728",
+      "type": "Paper",
+      "title": "Deepfake Video Detection via Predictive Representation Learning",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4212939825",
+      "type": "Paper",
+      "title": "The Deepfake Challenges and Deepfake Video Detection",
+      "year": 2020,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4409496318",
+      "type": "Paper",
+      "title": "Deepfake video detection methods, approaches, and challenges",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W7115894752",
+      "type": "Paper",
+      "title": "DeepFake Video Detection",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W7115922658",
+      "type": "Paper",
+      "title": "DeepFake Video Detection",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3128609017",
+      "type": "Paper",
+      "title": "Deepfake Video Detection Using Convolutional Vision Transformer",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4386995319",
+      "type": "Paper",
+      "title": "A survey on deepfake video detection datasets",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W2995516027",
+      "type": "Paper",
+      "title": "Deepfake Video Detection through Optical Flow Based CNN",
+      "year": 2019,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4318828948",
+      "type": "Paper",
+      "title": "A Novel Smart Deepfake Video Detection System",
+      "year": 2023,
+      "demonstrated_source": "fulltext",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": false,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": false,
+            "evidence": [
+              "Additionally, it outperforms recent stat e-of-the-art \nmethods by an average growth of 34.4% accuracy and 34.2% \nAUROC as can be seen in Table III."
+            ]
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "proposed method to the FakeAVCeleb videos dataset for two \nlevels; visual video frames and audio.",
+              "The visual video frames \nand audio modalities are trained end-to-end separately."
+            ]
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "This learns the instructive \ntemporal features for each unimodality.",
+              "This helps to learn the instructive temporal features \nfor the whole multimodal video."
+            ]
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "THE PERFORMANCE OF THE MODIFIED INCEPTIONRESNETV2 METHOD WITH SINGLE GRU-BASED ATTENTION MECHANISM FOR DETECTING THE \nDEEPFAKE AUDIO UNIMODALITY COMPARED TO RECENT STATE-OF-THE-ART METHODS ON THE FAKEAVCELEB DATASET \nModel \nUnimodality \nAudio \nAccuracy AUCROC \nExperiment 1 (The proposed CQT based modified \nInceptionResNetV2 with GRU-based attention mechanism for the second level) 97.52% 97.62% \nMel-frequency cepstrum (MFC)+ VGG16 [60] 67.14% 67.13% \n \nMFC+ Xception [60] 76.26% 76.25% \n(IJACSA) International Journal of Advanced Computer Science and Applications, \nVol.",
+              "As well, the proposed CQT-\nbased modified InceptionResNetV2 produced a valuable deep \ntime-frequency representation of audio."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4382407365",
+      "type": "Paper",
+      "title": "Dynamic Difference Learning With Spatio\u2013Temporal Correlation for Deepfake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4317987748",
+      "type": "Paper",
+      "title": "MRE-Net: Multi-Rate Excitation Network for Deepfake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4411241923",
+      "type": "Paper",
+      "title": "GenConViT: Deepfake Video Detection Using Generative Convolutional Vision Transformer",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3140862969",
+      "type": "Paper",
+      "title": "DeepFake Videos Detection Based on Texture Features",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4381302520",
+      "type": "Paper",
+      "title": "MSVT: Multiple Spatiotemporal Views Transformer for DeepFake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4382239873",
+      "type": "Paper",
+      "title": "Deepfake Video Detection via Facial Action Dependencies Estimation",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4393324116",
+      "type": "Paper",
+      "title": "Analyzing temporal coherence for deepfake video detection",
+      "year": 2024,
+      "demonstrated_source": "fulltext",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "#params.DF FS F2F NT\nFrame-level LRLNet [7] 91.37 89.44 90.22 85.83 89.22 46.3 M\nPEL [8] 89.78 87.67 88.91 87.78 88.54 33.7 M\nVideo-level S-MIL [9] 87.68 85.26 85.85 84.49 85.82 42.2 M\nSTIL [10] 90.71 88.73 91.73 88.78 89.99 32.5 M\nLipForensics [15] 97.83 90.51 98.02 96.90 95.82 36.0 M\nFTCN [16] 96.71 96.02 96.07 96.24 96.26 26.6 M\nDIL [17] 94.36 94.77 94.81 93.24 94.3 41.4 M\nECGL [18] 92.49 90.96 89.59 89.19 90.56 37.3 M\nSeqFakeFormer [19] 96.82 95.08 95.75 95.27 95.73 104 M\nTwo-branch [27] 89.81 87.28 90.06 86.92 88.52 67.1 M\nMSVT [28] 98.06 97.43 96.68 97.19 97.34 26.5 M\nVDF [29] 96.20 86.31 89.60 94.25 91.62 40 M\nAudio-DF [30] 97.31 94.74 94.50 95.10 95.41 89 M\nTCAN (Ours) 99.16 98.93 99.03 98.15 98.82 3.3 M\n5.2.",
+              "Our\napproach achieved promising results in comparison to both video-level and frame-level approaches."
+            ]
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": false,
+            "evidence": [
+              "In one of the most promising second choices as a backbone network for\ncoherence analysis, PF [51] showcases e ffective detection performance with an overall average AUC\nscore of 94.55% in all categories of intra- and cross-dataset evaluations.",
+              "TCAN first employs dynamic feature extraction and aggregation mechanisms to inte-\ngrate multi-level temporal features effectively, and then analyzes the local-global temporal perspectives\nwithin TFP by utilizing global temporal self-attention for robust incoherence identification."
+            ]
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "Compared to contemporary state-of-the-art ap-\nproaches such as MSVT [28], FTCN [16], SeqFakeFormer [19], and LipForensics [15], our approach\nachieves a 1.48%, 2.56%, 3.09%, and 3.0% increase in video-level AUC, respectively.",
+              "#params.DF FS F2F NT\nFrame-level LRLNet [7] 91.37 89.44 90.22 85.83 89.22 46.3 M\nPEL [8] 89.78 87.67 88.91 87.78 88.54 33.7 M\nVideo-level S-MIL [9] 87.68 85.26 85.85 84.49 85.82 42.2 M\nSTIL [10] 90.71 88.73 91.73 88.78 89.99 32.5 M\nLipForensics [15] 97.83 90.51 98.02 96.90 95.82 36.0 M\nFTCN [16] 96.71 96.02 96.07 96.24 96.26 26.6 M\nDIL [17] 94.36 94.77 94.81 93.24 94.3 41.4 M\nECGL [18] 92.49 90.96 89.59 89.19 90.56 37.3 M\nSeqFakeFormer [19] 96.82 95.08 95.75 95.27 95.73 104 M\nTwo-branch [27] 89.81 87.28 90.06 86.92 88.52 67.1 M\nMSVT [28] 98.06 97.43 96.68 97.19 97.34 26.5 M\nVDF [29] 96.20 86.31 89.60 94.25 91.62 40 M\nAudio-DF [30] 97.31 94.74 94.50 95.10 95.41 89 M\nTCAN (Ours) 99.16 98.93 99.03 98.15 98.82 3.3 M\n5.2."
+            ]
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "We found that video-\nbased methods, such as MSVT [28] (76.79% AUC), VDF [29] (85.10% AUC), Audio-DF [30] (82.31%\nAUC), three state-of-the-art transformer-based approaches, and our TCAN with 86.94% AUC, outper-\nformed the frame-level state-of-the-art approaches on the DFDC [41] dataset, such as LRLNet [7]\n(76.61% AUC) and PEL [8] (65.87% AUC), which suggests that temporal information is crucial in\nenhancing the cross-domain generalization ability of deepfake video detection methods.",
+              "Further, we have observed that LipForensics [15], FTCN [16], MSVT [28], VDF [29], and Audio-\nDF [30], all attempt to utilize the temporal incoherence in deepfake videos to enhance the generaliza-\ntion detection capability."
+            ]
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "Our approach surpasses most existent methods by a signifi-\ncant margin on all four types of manipulations in FF ++ [35] (DF, FS, F2F, and NT) that use different\nmethods and have distinct artifacts.",
+              "The t-SNE [47] visualization depicts the learned feature space of classes predicted\nby our proposed framework on cross-manipulation evaluation across three compression lev-\nels."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4402772264",
+      "type": "Paper",
+      "title": "Exploiting Style Latent Flows for Generalizing Deepfake Video Detection",
+      "year": 2024,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3192932902",
+      "type": "Paper",
+      "title": "Dynamic Inconsistency-aware DeepFake Video Detection",
+      "year": 2021,
+      "demonstrated_source": "fulltext",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "As shown in Figure 1, different from the natural variation\nbetween real video frames, existing face manipulation tools\nwhich operate on single frame destroy the consistency be-\ntween adjacent frames and lead to pixel jitter in fake videos.",
+              "2 Related Work\n2.1 DeepFake Video Detection\nCurrent DeepFake detection algorithms roughly fall into two\nbranches: image-based methods and video-based methods."
+            ]
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": false,
+            "evidence": [
+              "Proceedings of the Thirtieth International Joint Conference on Arti\ufb01cial Intelligence (IJCAI-21)\n738\nLinear\n(HW,HW)\n\ud835\udc491 \ud835\udc492\n\ud835\udc3412 = \ud835\udc491\n\ud835\udc47\ud835\udc44\ud835\udc492\n\ud835\udc4d12 = \ud835\udc491\ud835\udc3412\nConv\nConv\nMaxPool\n\ud835\udc36 \u00d7 \ud835\udc3b \u00d7 \ud835\udc4a\nFlatten to \n\ud835\udc36 \u00d7 \ud835\udc3b\ud835\udc4a\n\ud835\udc36 \u00d7 \ud835\udc3b\ud835\udc4a\n\ud835\udc36 \u00d7 \ud835\udc3b\ud835\udc4a\nConv,bn,ReLU,AveragePool\nFully-connected (512,1024)\nDropout,ReLU\nFully-connected (1024,1024)\nDropout,ReLU\nFully-connected (1024,2)\nSoftmax\n[\ud835\udc5d0, \ud835\udc5d1]\nRoIPool\n RoIPool\n\ud835\udc491 \ud835\udc4924 Local areas \ncoordinates\n\ud835\udc93\ud835\udc8a\n\ud835\udc8b: \ud835\udfd2 \u00d7[C\u00d7H\u2019\u00d7W\u2019]\nConv\n\ud835\udf03: 1 \u00d7 1 \u00d7 1\nConv\n\ud835\udf11: 1 \u00d7 1 \u00d7 1\nConv\ng: 1 \u00d7 1 \u00d7 1\n(a)Global Correlation branch (b)Local Association branch (c) Classification network\n\ud835\udfd2 \u00d7 [C\u00d7H\u2019W\u2019\u00d71]\nAdd up to C\u00d7H\u2019W\u2019\u00d71\nFlatten back to\n\ud835\udc731: C\u00d7H\u2019\u00d7W\u2032\nFlatten to\n\ud835\udfd2 \u00d7 [C\u00d7H\u2019W\u2019\u00d71]\n\ud835\udc7f1 = [\ud835\udc3f1, \ud835\udc4a1]\n\ud835\udc7e1: \ud835\udc36 \u00d7 \ud835\udc3b\u2032 \u00d7 \ud835\udc4a\u2032\n\ud835\udc44\nFigure 4: The details of Global Correlation branch(GCB), Local Association branch(LAB) and Classi\ufb01cation network.\u2032\u2297\u2032 represents matrix\nmultiply.\u2032\u2295\u2032 represents element-wise add.\u2032\u2299\u2032 denotes the element-wise multiply.",
+              "As shown in Figure 4(c),\nthe Classi\ufb01cation network consists of one convolutional layer\nand three fully connected layers, equipped with BatchNor-\nmalization, average pooling, ReLU, Dropout and Softmax."
+            ]
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": false,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "However,\nthe performance of recent frame-based detection\nmethods become limited due to their ignorance of\nthe inter-frame inconsistency of fake videos.",
+              "In this\npaper, we propose a novel Dynamic Inconsistency-\naware Network to handle the inconsistent prob-\nlem, which uses a Cross-Reference module (CRM)\nto capture both the global and local inter-frame\ninconsistencies."
+            ]
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "Example Fake(b) shows the inconsistency of\nartifacts of the same area between adjacent frames.",
+              "Image-based Methods\nEarly image-based methods [Fridrich, 2012 ] are driven by\nhand-crafted features or statistical artifacts that occur dur-\ning image formation."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4281703536",
+      "type": "Paper",
+      "title": "DeepFake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3128292651",
+      "type": "Paper",
+      "title": "A Comparative Study of Deepfake Video Detection Method",
+      "year": 2020,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4285597439",
+      "type": "Paper",
+      "title": "Deepfake Video Detection with Spatiotemporal Dropout Transformer",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3011236737",
+      "type": "Paper",
+      "title": "Image Feature Detectors for Deepfake Video Detection",
+      "year": 2019,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4384616468",
+      "type": "Paper",
+      "title": "TALL: Thumbnail Layout for Deepfake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4318603549",
+      "type": "Paper",
+      "title": "Adversarially Robust Deepfake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4285600316",
+      "type": "Paper",
+      "title": "Region-Aware Temporal Inconsistency Learning for DeepFake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "fulltext",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "Image-based detection methods attempt to\nexploit diverse cues to learn discriminative features, including\n\u2217Equal Contributions.",
+              "Though these methods have effectively\nimproved the performance, there are still some limitations in\nlearning the comprehensive temporal inconsistency."
+            ]
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": false,
+            "evidence": [
+              "DSANet [Wu et al., 2021] introduces a dynamic seg-\nment aggregation module to aggregate temporal information.",
+              "Instead of directly learning the\ntemporal kernels, we decouple the dynamic temporal kernel\ninto a set of region-agnostic basic filters and region-sensitive\naggregation weights."
+            ]
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "Random horizontal flip is\nemployed as the data augmentation."
+            ]
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": true,
+            "evidence": [
+              "Region-Aware Temporal Inconsistency Learning for DeepFake Video Detection\nZhihao Gu1,2\u2217 , Taiping Yao2\u2217 , Yang Chen2\u2217 , Ran Yi1 , Shouhong Ding2\u2020 and Lizhuang Ma1,3\u2020\n1School of Electronic and Electrical Engineering, Shanghai Jiao Tong University, Shanghai, China\n2Tencent Youtu Lab, Shanghai, China\n3MoE Key Lab of Artificial Intelligence, Shanghai Jiao Tong University, Shanghai, China\n{ellery-holmes, ranyi}@sjtu.edu.cn,{taipingyao, wizyangchen, ericshding}@tencent.com,\nma-lz@cs.sjtu.edu.cn\nAbstract\nThe rapid development of face forgery techniques\nhas drawn growing attention due to security con-\ncerns.",
+              "Existing deepfake video detection methods\nalways attempt to capture the discriminative fea-\ntures by directly exploiting static temporal convo-\nlution to mine temporal inconsistency, without ex-\nplicit exploration on the diverse temporal dynam-\nics of different forged regions."
+            ]
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": true,
+            "evidence": [
+              "blending boundary [Li et al., 2020a; Wang et al., 2020b] and\nfrequency information [Chen et al., 2021; Gu et al., 2021a;\nSun et al., 2022]."
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4401976797",
+      "type": "Paper",
+      "title": "Combating deepfakes: a comprehensive multilayer deepfake video detection framework",
+      "year": 2024,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4285226122",
+      "type": "Paper",
+      "title": "Unsupervised Learning-Based Framework for Deepfake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4320008888",
+      "type": "Paper",
+      "title": "Exploiting Complementary Dynamic Incoherence for DeepFake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W7219965899",
+      "type": "Paper",
+      "title": "DeepScan : A Deepfake Video Detection System",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4280528434",
+      "type": "Paper",
+      "title": "The Effectiveness of Temporal Dependency in Deepfake Video Detection",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4391685359",
+      "type": "Paper",
+      "title": "An efficient deepfake video detection using robust deep learning",
+      "year": 2024,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4388230638",
+      "type": "Paper",
+      "title": "DeepMark: A Scalable and Robust Framework for DeepFake Video Detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4408153125",
+      "type": "Paper",
+      "title": "DEEPFAKE VIDEO DETECTION USING DEEPLEARNING",
+      "year": 2025,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4361792588",
+      "type": "Paper",
+      "title": "A Survey on Deepfake Video Detection Techniques Using Deep Learning",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4223941448",
+      "type": "Paper",
+      "title": "Deepfake Video Detection Based on EfficientNet-V2 Network",
+      "year": 2022,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4387773386",
+      "type": "Paper",
+      "title": "On the effectiveness of handcrafted features for deepfake video detection",
+      "year": 2023,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W4396861045",
+      "type": "Paper",
+      "title": "Spatiotemporal Inconsistency Learning and Interactive Fusion for Deepfake Video Detection",
+      "year": 2024,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3098945196",
+      "type": "Paper",
+      "title": "Training Strategies and Data Augmentations in CNN-based DeepFake Video Detection",
+      "year": 2020,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": true
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    },
+    {
+      "id": "openalex_W3197902242",
+      "type": "Paper",
+      "title": "Spatiotemporal Inconsistency Learning for DeepFake Video Detection",
+      "year": 2021,
+      "demonstrated_source": "unknown",
+      "profile": {
+        "modality": {
+          "image": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "video": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          }
+        },
+        "goal": {
+          "detection": true,
+          "generation": false
+        },
+        "cue_families": {
+          "sound": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "cross_frame_movement": {
+            "claimed": true,
+            "demonstrated": null,
+            "evidence": []
+          },
+          "technical_traces": {
+            "claimed": false,
+            "demonstrated": null,
+            "evidence": []
+          }
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "arxiv_1809_00888",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": false,
+      "demonstrated": true
+    },
+    {
+      "from": "arxiv_1809_00888",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "arxiv_1809_00888",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "arxiv_1809_00888",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": false
+    },
+    {
+      "from": "openalex_W3155203878",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3155203878",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4399138486",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4399138486",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4399138486",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3048932886",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3048932886",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3048932886",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4390874333",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4390874333",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4390874333",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4390874333",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3207531490",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3207531490",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W2911424785",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W2911424785",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W2911424785",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4304015019",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4304015019",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4304015019",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4283802557",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4283802557",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3110828385",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3110828385",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280579728",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280579728",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280579728",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4212939825",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4212939825",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4409496318",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4409496318",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4409496318",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7115894752",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7115894752",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7115922658",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7115922658",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3128609017",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4386995319",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W2995516027",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W2995516027",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4318828948",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4318828948",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4318828948",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4318828948",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": false
+    },
+    {
+      "from": "openalex_W4382407365",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4382407365",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4382407365",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4317987748",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4317987748",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4317987748",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4411241923",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4411241923",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3140862969",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3140862969",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4381302520",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4381302520",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4381302520",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4382239873",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4382239873",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4393324116",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": false,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4393324116",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4393324116",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4393324116",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4393324116",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": false
+    },
+    {
+      "from": "openalex_W4402772264",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4402772264",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4402772264",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3192932902",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W3192932902",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": false,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W3192932902",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": false
+    },
+    {
+      "from": "openalex_W4281703536",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4281703536",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3128292651",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3128292651",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3128292651",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4285597439",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4285597439",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4285597439",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3011236737",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3011236737",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4384616468",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4384616468",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4384616468",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4384616468",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4318603549",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4285600316",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": false,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4285600316",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4285600316",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": false,
+      "demonstrated": true
+    },
+    {
+      "from": "openalex_W4285600316",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": false
+    },
+    {
+      "from": "openalex_W4401976797",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4401976797",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4285226122",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4320008888",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7219965899",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W7219965899",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280528434",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280528434",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4280528434",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4391685359",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4391685359",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4391685359",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4391685359",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4391685359",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4388230638",
+      "to": "cue:technical_traces",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4388230638",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4408153125",
+      "to": "cue:sound",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4408153125",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4408153125",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4408153125",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4361792588",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4361792588",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4361792588",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4223941448",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4387773386",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4387773386",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4387773386",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4396861045",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W4396861045",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3098945196",
+      "to": "modality:image",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3098945196",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3197902242",
+      "to": "cue:cross_frame_movement",
+      "rel": "COVERS_CUE",
+      "claimed": true,
+      "demonstrated": null
+    },
+    {
+      "from": "openalex_W3197902242",
+      "to": "modality:video",
+      "rel": "TARGETS_MODALITY",
+      "claimed": true,
+      "demonstrated": null
+    }
+  ]
+}
