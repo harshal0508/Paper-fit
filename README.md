@@ -2,17 +2,12 @@
 
 PaperFit is a rule-based reasoning engine built for the Calyb AI Engineering Intern Assignment (Domain B: Research Paper Onboarding).
 
-It ingests deepfake detection papers, structures them into a custom knowledge graph (stored as a single JSON file representing the knowledge state) based on modality and cue families, and evaluates how well each paper fits a **new** project description. 
+It ingests deepfake detection papers, structures them into a knowledge graph (stored as a single JSON file representing the knowledge state) based on modality and cue families, and evaluates how well each paper fits a **new** project description. 
 
 For a detailed explanation of the reasoning, schema tradeoffs, and limitations (including why I chose a rule-based approach over an LLM and how the MesoNet edge-case was handled), see [approach.md](approach.md).
 
 ## Project Structure
-- `config/` - Contains `lexicon.json` and `schema.json`, which define the rules and keywords for the engine. 
-  > **💡 Architecture Note:** The Python pipeline itself is completely domain-agnostic. All domain logic is isolated in these JSON files. For example, to adapt this entire engine to **Medical Tumor Detection**, you would just:
-  > 1. Fetch new data: `python src/fetch_openalex.py "breast cancer MRI"`
-  > 2. In `config/schema.json`, change the modalities to `["x-ray", "mri"]` and cue families to `["tumor_size", "tissue_density"]`.
-  > 3. In `config/lexicon.json`, map medical terms (like `"lesion"` or `"calcification"`) to your new cues.
-  > Without rewriting a single line of Python, the exact same pipeline will now generate a knowledge graph grading medical papers based on diagnostic cues.
+- `config/` - Contains `lexicon.json` and `schema.json`, which define the rules and keywords for the engine. The keywords and cue families live in `config/lexicon.json`, so they can be edited without touching the code. Other rules, like the video check in `grade()`, are specific to this domain and would need code changes for another field.
 - `src/` - Python source code for fetching, building the knowledge state, and analyzing projects.
 - `data/` - Holds raw paper JSONs, full-text extractions, and the labeled dataset for validation.
 - `knowledge_state/` - The built graph JSON and visualization output.
@@ -41,7 +36,7 @@ Attempts to download open-access PDFs and extracts text to `data/fulltext/<paper
 ```bash
 python src/fetch_fulltext.py
 ```
-**Important limitation:** Full text was available for only **5 of 49 papers**. The other 44 papers are graded from the abstract alone. Additionally, the full text for our seed paper, MesoNet (`arxiv_1809_00888.txt`), was added manually from arXiv's HTML page, not through this automatic PDF step.
+**Important limitation:** Full text was available for only **5 of 49 papers**. The other 44 papers are graded from the abstract alone. Additionally, the full text for my seed paper, MesoNet (`arxiv_1809_00888.txt`), was added manually from arXiv's HTML page, not through this automatic PDF step.
 
 ### 3. Build the Knowledge State
 Generates the structured Knowledge Graph (`knowledge_state/knowledge_base.json`).
